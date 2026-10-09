@@ -70,44 +70,47 @@ export const portfolioData = {
       id: "languages",
       name: "LANGUAGES",
       skills: [
-        { name: " JavaScript", level: "Basics", icon: "Code2" },
-        { name: "Python", level: "Basics", icon: "Terminal" },
-        { name: "HTML / Modern CSS", level: "Basics", icon: "Layout" },
-        { name: "SQL", level: "Basics", icon: "Database" }
+        { name: "TypeScript / JavaScript", level: "Advanced", icon: "Code2" },
+        { name: "Python", level: "Proficient", icon: "Terminal" },
+        { name: "HTML5 / Modern CSS", level: "Advanced", icon: "Layout" },
+        { name: "SQL", level: "Proficient", icon: "Database" }
       ]
     },
     {
       id: "frontend",
       name: "FRONTEND",
       skills: [
-        { name: "React", level: "asics", icon: "Layers" },
-        { name: "Responsive UI/UX", level: "Basics", icon: "Smartphone" }
+        { name: "React 18 / 19", level: "Advanced", icon: "Layers" },
+        { name: "Vite Tooling", level: "Advanced", icon: "Zap" },
+        { name: "CSS-in-JS & Glassmorphism", level: "Advanced", icon: "Palette" },
+        { name: "Responsive UI/UX", level: "Advanced", icon: "Smartphone" }
       ]
     },
     {
       id: "backend",
       name: "BACKEND & APIS",
       skills: [
-        { name: "Node.js", level: "Basics", icon: "Server" },
-        { name: "RESTful API Design", level: "Basics", icon: "Network" },
-        { name: "Authentication & JWT", level: "Basics", icon: "Lock" }
+        { name: "Node.js & Express", level: "Proficient", icon: "Server" },
+        { name: "RESTful API Design", level: "Proficient", icon: "Network" },
+        { name: "Authentication & JWT", level: "Intermediate", icon: "Lock" }
       ]
     },
     {
       id: "infra",
       name: "INFRA & TOOLS",
       skills: [
-        { name: "Git & GitHub ", level: "Basics", icon: "GitBranch" },
-        { name: "Vercel Deployment", level: "Basics", icon: "Cloud" },
-        { name: "VS Code & Terminal", level: "Proficient", icon: "TerminalSquare" }
+        { name: "Git & GitHub CI/CD", level: "Advanced", icon: "GitBranch" },
+        { name: "Vercel Deployment", level: "Advanced", icon: "Cloud" },
+        { name: "VS Code & Terminal", level: "Advanced", icon: "TerminalSquare" }
       ]
     },
     {
       id: "databases",
       name: "DATABASES",
       skills: [
-        { name: "PostgreSQL", level: "Basics", icon: "Database" },
-        { name: "MongoDB", level: "Basics", icon: "Layers" },
+        { name: "PostgreSQL", level: "Intermediate", icon: "Database" },
+        { name: "MongoDB", level: "Intermediate", icon: "Layers" },
+        { name: "SQLite", level: "Proficient", icon: "HardDrive" }
       ]
     }
   ],
@@ -120,10 +123,10 @@ export const portfolioData = {
       match: "99% Match",
       rating: "Top 10",
       duration: "Active",
-      description: "Interactive Netflix UI cinematic developer portfolio built with React and modern CSS glassmorphism.",
-      tags: ["React", "CSS"],
+      description: "Interactive Netflix UI cinematic developer portfolio built with React, Vite, and modern responsive CSS.",
+      tags: ["React", "TypeScript", "Vite", "CSS"],
       githubUrl: "https://github.com/vigneshSuprithB/my-netflix-portfolio",
-      liveUrl: "https://my-netflix-portfolio-black.vercel.app",
+      liveUrl: "https://vigneshsuprith-portfolio.vercel.app",
       badge: "Trending #1"
     },
     {
