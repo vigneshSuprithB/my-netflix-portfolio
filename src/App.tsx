@@ -39,7 +39,7 @@ export default function App() {
     setEntered(true);
   };
 
-  // 1. Netflix Profile Gate
+  // 1. Netflix Profile Gate ("Who's watching?")
   if (!profileSelected) {
     return (
       <div style={{
@@ -100,7 +100,7 @@ export default function App() {
     );
   }
 
-  // 2. Fullscreen Video Intro
+  // 2. Fullscreen Video Intro Screen
   if (showIntroVideo && !entered) {
     return (
       <div style={{
@@ -142,58 +142,65 @@ export default function App() {
     );
   }
 
-  // 3. Responsive Main Portfolio App
+  // 3. Main Netflix Portfolio App
   return (
     <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '6rem' }}>
-      {/* Sticky Glass Navbar */}
-      <nav
-        className="nav-container"
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-          backgroundColor: 'rgba(12, 12, 12, 0.75)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <span style={{ color: '#E50914', fontSize: '1.6rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
+      {/* Responsive Netflix Frosted Glass Navbar */}
+      <nav className="nav-container">
+        {/* Top Header Row */}
+        <div className="nav-top-row">
+          <span style={{ color: '#E50914', fontSize: '1.7rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
-          <div className="nav-links" style={{ fontSize: '0.9rem' }}>
-            <a href="#about" style={{ color: '#e5e5e5', textDecoration: 'none' }}>Home</a>
-            <a href="#about-me" style={{ color: '#aaa', textDecoration: 'none' }}>Overview</a>
-            <a href="#projects" style={{ color: '#aaa', textDecoration: 'none' }}>Episodes</a>
-            <a href="#top-tech" style={{ color: '#aaa', textDecoration: 'none' }}>Top 10</a>
-            <a href="#background" style={{ color: '#aaa', textDecoration: 'none' }}>History</a>
-            <a href="#honors" style={{ color: '#aaa', textDecoration: 'none' }}>Honors</a>
+          <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+            <a 
+              href={myPortfolio.socials.github} 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+            >
+              GitHub
+            </a>
+            <a 
+              href={myPortfolio.socials.linkedin} 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+            >
+              LinkedIn
+            </a>
+            <button
+              onClick={() => {
+                setProfileSelected(false);
+                setEntered(false);
+              }}
+              style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                color: '#fff',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                padding: '5px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '0.75rem',
+                fontWeight: 600
+              }}
+            >
+              Switch
+            </button>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <a href={myPortfolio.socials.github} target="_blank" rel="noreferrer" style={{ color: '#aaa', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}>
-            GitHub
-          </a>
-          <button
-            onClick={() => {
-              setProfileSelected(false);
-              setEntered(false);
-            }}
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#fff',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(8px)',
-              padding: '5px 10px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.75rem',
-              fontWeight: 500
-            }}
-          >
-            Switch
-          </button>
+
+        {/* Categories / Navigation Chips (Horizontally Scrollable on Mobile) */}
+        <div className="nav-categories">
+          <a href="#about" className="nav-chip">Home</a>
+          <a href="#about-me" className="nav-chip">Overview</a>
+          <a href="#projects" className="nav-chip">Episodes</a>
+          <a href="#top-tech" className="nav-chip">Top 10</a>
+          <a href="#background" className="nav-chip">History</a>
+          <a href="#honors" className="nav-chip">Honors</a>
+          <a href="#skills" className="nav-chip">Skills</a>
         </div>
       </nav>
 
@@ -314,7 +321,7 @@ export default function App() {
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.8rem' }}>
             <MapPin size={15} color="#E50914" />
-            <span>Based in {myPortfolio.location}</span>
+            <span>Based in {myPortfolio.location} • Actively Open to Opportunities</span>
           </div>
         </div>
       </section>

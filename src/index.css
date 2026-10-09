@@ -55,21 +55,60 @@ body {
   background-color: rgba(229, 9, 20, 0.18) !important;
 }
 
-/* ================= Mobile & Responsive Styling ================= */
+/* ================= Responsive Layout ================= */
 .nav-container {
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(12, 12, 12, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1.25rem;
 }
 
-.nav-links {
+.nav-top-row {
   display: flex;
-  gap: 1.25rem;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-categories {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-top: 0.65rem;
+  padding-bottom: 0.2rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+.nav-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-chip {
+  color: #bbb;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+.nav-chip:hover, .nav-chip:active {
+  background: rgba(229, 9, 20, 0.2);
+  border-color: rgba(229, 9, 20, 0.4);
+  color: #ffffff;
 }
 
 .hero-container {
-  padding: 2.5rem 1.5rem 2rem;
+  padding: 2.5rem 1.25rem 2rem;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -90,8 +129,8 @@ body {
 }
 
 .hero-image-card {
-  width: 200px;
-  height: 260px;
+  width: 210px;
+  height: 270px;
   margin: 0 auto;
 }
 
@@ -115,16 +154,35 @@ body {
 
 .top-tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
   gap: 0.75rem;
 }
 
-/* Desktop & Laptop Breakpoint (min-width: 768px) */
+/* Laptop & Desktop adjustments */
 @media (min-width: 768px) {
   .nav-container {
     padding: 1.2rem 3rem;
   }
-  
+
+  .nav-categories {
+    padding-top: 0;
+    padding-bottom: 0;
+    gap: 1rem;
+  }
+
+  .nav-chip {
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    padding: 2px 6px;
+    border-radius: 0;
+  }
+
+  .nav-chip:hover {
+    background: transparent;
+    color: #fff;
+  }
+
   .hero-container {
     flex-direction: row;
     justify-content: space-between;
@@ -132,38 +190,31 @@ body {
     padding: 4rem 2rem 3rem;
     gap: 3.5rem;
   }
-  
+
   .hero-text-container {
     text-align: left;
     flex: 1 1 520px;
   }
-  
+
   .hero-title {
     font-size: 3.8rem;
   }
-  
+
   .hero-image-card {
     width: 280px;
     height: 360px;
     margin: 0;
   }
-  
+
   .hero-actions {
     justify-content: flex-start;
   }
-  
+
   .two-col-grid {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
-  
+
   .top-tech-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-}
-
-/* Hide desktop navbar text links on small phones */
-@media (max-width: 640px) {
-  .nav-links {
-    display: none;
   }
 }
