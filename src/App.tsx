@@ -90,7 +90,7 @@ export default function App() {
   alignItems: 'center',
 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
+          <span style={{ color: '#9409e5', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
           <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.9rem' }}>
