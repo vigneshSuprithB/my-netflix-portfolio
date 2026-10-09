@@ -146,10 +146,10 @@ export default function App() {
   return (
     <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '6rem' }}>
       {/* Responsive Netflix Frosted Glass Navbar */}
-      {/* Responsive Netflix Frosted Glass Navbar */}
       <nav className="nav-container">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', flexWrap: 'wrap' }}>
-          <span style={{ color: '#E50914', fontSize: '1.75rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
+        {/* Left Side: Brand Logo + Section Links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', flexShrink: 0 }}>
+          <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
           <div className="nav-categories">
@@ -163,12 +163,13 @@ export default function App() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        {/* Right Side: GitHub, LinkedIn, Switch (Fixed on the far right) */}
+        <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexShrink: 0 }}>
           <a 
             href={myPortfolio.socials.github} 
             target="_blank" 
             rel="noreferrer" 
-            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap' }}
           >
             GitHub
           </a>
@@ -176,7 +177,7 @@ export default function App() {
             href={myPortfolio.socials.linkedin} 
             target="_blank" 
             rel="noreferrer" 
-            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap' }}
           >
             LinkedIn
           </a>
@@ -194,7 +195,8 @@ export default function App() {
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '0.8rem',
-              fontWeight: 600
+              fontWeight: 600,
+              whiteSpace: 'nowrap'
             }}
           >
             Switch
@@ -227,7 +229,7 @@ export default function App() {
             {myPortfolio.name}
           </h1>
 
-          <p style={{ color: '#cccccc', fontSize: '1rem', lineHeight: '1.6', maxWidth: '580px', margin: '0 auto 1.75rem' }}>
+          <p style={{ color: '#cccccc', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '580px', margin: '0 0 1.75rem' }}>
             {myPortfolio.bio}
           </p>
 
@@ -240,7 +242,7 @@ export default function App() {
                 gap: '0.5rem',
                 backgroundColor: '#ffffff',
                 color: '#000000',
-                padding: '0.7rem 1.4rem',
+                padding: '0.75rem 1.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
@@ -261,7 +263,7 @@ export default function App() {
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.15)',
                 color: '#ffffff',
-                padding: '0.7rem 1.4rem',
+                padding: '0.75rem 1.6rem',
                 borderRadius: '6px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
@@ -295,7 +297,7 @@ export default function App() {
       </section>
 
       {/* About Me / Overview */}
-      <section id="about-me" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
+      <section id="about-me" className="section-wrapper" style={{ maxWidth: '1150px', margin: '0 auto' }}>
         <div
           className="netflix-card"
           style={{
@@ -303,7 +305,7 @@ export default function App() {
             backdropFilter: 'blur(14px)',
             borderRadius: '12px',
             border: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '1.5rem',
+            padding: '1.75rem 2rem',
             textAlign: 'left'
           }}
         >
@@ -313,11 +315,11 @@ export default function App() {
               Series Overview & Storyline
             </span>
           </div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.75rem' }}>Behind the Developer</h2>
-          <p style={{ color: '#bbb', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.25rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.75rem' }}>Behind the Developer</h2>
+          <p style={{ color: '#bbb', fontSize: '1rem', lineHeight: '1.6', marginBottom: '1.25rem' }}>
             {myPortfolio.aboutExtended}
           </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.8rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem' }}>
             <MapPin size={15} color="#E50914" />
             <span>Based in {myPortfolio.location} • Actively Open to Opportunities</span>
           </div>
@@ -325,8 +327,8 @@ export default function App() {
       </section>
 
       {/* Projects / Episodes */}
-      <section id="projects" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
+      <section id="projects" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
           Season 1: Featured Projects
         </h2>
         <div className="two-col-grid">
@@ -337,7 +339,7 @@ export default function App() {
               style={{
                 backgroundColor: 'rgba(24, 24, 27, 0.55)',
                 backdropFilter: 'blur(14px)',
-                padding: '1.5rem',
+                padding: '1.75rem',
                 borderRadius: '12px',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 display: 'flex',
@@ -350,8 +352,8 @@ export default function App() {
                 <span style={{ color: '#E50914', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>
                   {proj.tagline}
                 </span>
-                <h3 style={{ fontSize: '1.2rem', margin: '0.4rem 0' }}>{proj.title}</h3>
-                <p style={{ color: '#999', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: '1rem' }}>
+                <h3 style={{ fontSize: '1.3rem', margin: '0.4rem 0' }}>{proj.title}</h3>
+                <p style={{ color: '#999', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '1.2rem' }}>
                   {proj.description}
                 </p>
                 <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
@@ -362,8 +364,8 @@ export default function App() {
                         backgroundColor: 'rgba(255, 255, 255, 0.06)',
                         border: '1px solid rgba(255, 255, 255, 0.08)',
                         color: '#ccc',
-                        fontSize: '0.7rem',
-                        padding: '3px 8px',
+                        fontSize: '0.75rem',
+                        padding: '4px 10px',
                         borderRadius: '4px',
                         fontWeight: 500
                       }}
@@ -395,10 +397,10 @@ export default function App() {
       </section>
 
       {/* Top 10 Stack */}
-      <section id="top-tech" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
+      <section id="top-tech" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          <Flame size={20} color="#E50914" />
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>
+          <Flame size={22} color="#E50914" />
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
             Top 10 Today in Tech Stack
           </h2>
         </div>
@@ -412,14 +414,14 @@ export default function App() {
                 backdropFilter: 'blur(10px)',
                 borderRadius: '8px',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
-                padding: '0.75rem',
+                padding: '0.85rem 1rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.75rem'
+                gap: '0.85rem'
               }}
             >
               <span style={{
-                fontSize: '1.8rem',
+                fontSize: '2rem',
                 fontWeight: 900,
                 color: '#E50914',
                 lineHeight: 1,
@@ -427,7 +429,7 @@ export default function App() {
               }}>
                 {idx + 1}
               </span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#e5e5e5' }}>
+              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#e5e5e5' }}>
                 {item}
               </span>
             </div>
@@ -436,8 +438,8 @@ export default function App() {
       </section>
 
       {/* Background (Education & Experience) */}
-      <section id="background" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
+      <section id="background" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
           Behind the Scenes: Background
         </h2>
         <div className="two-col-grid">
@@ -447,7 +449,7 @@ export default function App() {
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              padding: '1.5rem',
+              padding: '1.75rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               textAlign: 'left'
@@ -475,7 +477,7 @@ export default function App() {
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              padding: '1.5rem',
+              padding: '1.75rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               textAlign: 'left'
@@ -500,8 +502,8 @@ export default function App() {
       </section>
 
       {/* Awards & Certifications */}
-      <section id="honors" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
+      <section id="honors" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
           Awards & Certifications
         </h2>
         <div className="two-col-grid">
@@ -511,7 +513,7 @@ export default function App() {
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              padding: '1.5rem',
+              padding: '1.75rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               textAlign: 'left'
@@ -539,7 +541,7 @@ export default function App() {
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              padding: '1.5rem',
+              padding: '1.75rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               textAlign: 'left'
@@ -564,8 +566,8 @@ export default function App() {
       </section>
 
       {/* Additional Skills Cloud */}
-      <section id="skills" className="section-wrapper" style={{ maxWidth: '1150px', margin: '3rem auto 0' }}>
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
+      <section id="skills" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
           Additional Tech Universe
         </h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -577,9 +579,9 @@ export default function App() {
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(8px)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                padding: '0.45rem 0.9rem',
+                padding: '0.5rem 1rem',
                 borderRadius: '16px',
-                fontSize: '0.8rem',
+                fontSize: '0.85rem',
                 color: '#e5e5e5',
                 fontWeight: 500,
                 cursor: 'default'
@@ -592,7 +594,7 @@ export default function App() {
       </section>
 
       {/* Contact Section */}
-      <section className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
+      <section className="section-wrapper" style={{ maxWidth: '1150px', margin: '5rem auto 0' }}>
         <div
           className="netflix-card"
           style={{
@@ -600,7 +602,7 @@ export default function App() {
             backdropFilter: 'blur(16px)',
             borderRadius: '16px',
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '2rem 1.5rem',
+            padding: '2.5rem 1.5rem',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
@@ -610,8 +612,8 @@ export default function App() {
           <span style={{ color: '#E50914', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase' }}>
             Production Inquiries
           </span>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: 900, margin: '0.4rem 0 0.8rem' }}>Ready to Collaborate?</h2>
-          <p style={{ color: '#aaa', fontSize: '0.95rem', maxWidth: '480px', marginBottom: '1.5rem' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, margin: '0.4rem 0 0.8rem' }}>Ready to Collaborate?</h2>
+          <p style={{ color: '#aaa', fontSize: '0.95rem', maxWidth: '480px', marginBottom: '1.75rem' }}>
             Interested in hiring for a role or discussing a project? Send a direct message.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -623,7 +625,7 @@ export default function App() {
                 gap: '0.5rem',
                 backgroundColor: '#E50914',
                 color: '#ffffff',
-                padding: '0.75rem 1.6rem',
+                padding: '0.8rem 1.8rem',
                 borderRadius: '6px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
@@ -643,7 +645,7 @@ export default function App() {
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 color: '#ffffff',
-                padding: '0.75rem 1.6rem',
+                padding: '0.8rem 1.8rem',
                 borderRadius: '6px',
                 fontWeight: 700,
                 fontSize: '0.9rem',
