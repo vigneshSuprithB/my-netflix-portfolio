@@ -1,9 +1,52 @@
 import { useState } from 'react';
 import { myPortfolio } from './data';
-import { Play, FileText, ExternalLink, GraduationCap, Briefcase } from 'lucide-react';
+import { Play, FileText, ExternalLink, GraduationCap, Briefcase, Volume2, VolumeX } from 'lucide-react';
 
 export default function App() {
   const [entered, setEntered] = useState(false);
+  const [muted, setMuted] = useState(false);
+
+  // Synthesized Netflix "Ta-Dum" audio via native Web Audio API
+  const playNetflixSound = () => {
+    if (muted) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AudioCtx();
+
+      // Deep cinematic sub-bass hit
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(65, ctx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(32, ctx.currentTime + 1.2);
+      gain1.gain.setValueAtTime(0.5, ctx.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start();
+      osc1.stop(ctx.currentTime + 1.2);
+
+      // Distinct cinematic punch chord
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(130, ctx.currentTime + 0.08);
+      osc2.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 1.4);
+      gain2.gain.setValueAtTime(0.4, ctx.currentTime + 0.08);
+      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.4);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(ctx.currentTime + 0.08);
+      osc2.stop(ctx.currentTime + 1.4);
+    } catch {
+      // Graceful fallback if browser audio is blocked
+    }
+  };
+
+  const handleProfileSelect = () => {
+    playNetflixSound();
+    setEntered(true);
+  };
 
   // Netflix Profile Gate ("Who's watching?")
   if (!entered) {
@@ -28,7 +71,7 @@ export default function App() {
           ].map((profile, i) => (
             <div
               key={i}
-              onClick={() => setEntered(true)}
+              onClick={handleProfileSelect}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -96,6 +139,21 @@ export default function App() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+          <button
+            onClick={() => setMuted(!muted)}
+            title={muted ? "Unmute audio" : "Mute audio"}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: muted ? '#777' : '#E50914',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '4px'
+            }}
+          >
+            {muted ? <VolumeX size={19} /> : <Volume2 size={19} />}
+          </button>
           <a href={myPortfolio.socials.github} target="_blank" rel="noreferrer" style={{ color: '#aaa', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}>
             GitHub
           </a>
@@ -223,7 +281,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Projects / Episodes (Frosted Glass Cards) */}
+      {/* Featured Projects / Episodes */}
       <section id="projects" style={{ maxWidth: '1150px', margin: '3rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Season 1: Featured Projects
