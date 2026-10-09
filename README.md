@@ -1,32 +1,34 @@
-# React + TypeScript + Vite
+# 🎬 Netflix-Themed Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A responsive, interactive developer portfolio inspired by the Netflix UI experience. Built with React, Vite, and modern CSS frosted glass styling (glassmorphism).
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** [my-netflix-portfolio-black.vercel.app](https://my-netflix-portfolio-black.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Profile Selection Gate:** Interactive "Who's watching?" entry screen (Recruiter, Developer, Guest).
+- **Cinematic Transition:** Smooth video/intro animation overlay with skip capability.
+- **Dark Glass Aesthetic:** Frosted glassmorphism navigation, hero cards, and project containers.
+- **Top 10 Tech Stack:** Netflix-inspired numbered ranking of core languages and tools.
+- **Curated Content:** Overview plot storyline, project episodes with live GitHub links, education timeline, and verified certifications.
+- **Responsive Layout:** Optimized with custom horizontal chip navigation for mobile screens and expansive multi-column layouts for desktop.
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 🛠️ Tech Stack
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+- **Frontend:** React, TypeScript, Vite
+- **Icons:** Lucide React
+- **Styling:** CSS-in-JS & Vanilla CSS Glassmorphism
+- **Hosting & CI/CD:** Vercel
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## 🚀 Local Development
+
+1. Clone repository:
+   ```bash
+   git clone https://github.com/vigneshSuprithB/my-netflix-portfolio.git
+   cd my-netflix-portfolio
