@@ -29,10 +29,11 @@ export const portfolioData = {
     seasons: "1 Season",
     quality: "Ultra HD 4K",
     synopsis:
-      "A passionate technologist navigating modern web ecosystems, cloud computing, and intelligent systems. Specializing in high-performance React architectures, backend APIs, and seamless digital experiences.",
+      "A passionate technologist navigating modern web ecosystems, cloud computing, and intelligent systems. Specializing in high-performance full-stack architectures, distributed services, and immersive interactive user experiences.",
     resumeUrl: "#",
     githubUrl: "https://github.com/vigneshSuprithB",
     linkedinUrl: "https://linkedin.com",
+    email: "vigneshsuprith@gmail.com",
     photo: "/my-photo.jpg",
     audio: "/netflix.mp3"
   },
@@ -48,70 +49,60 @@ export const portfolioData = {
     education: [
       {
         degree: "MSc Computing and Technologies",
-        institution: "Master's Degree Program",
-        period: "2025 - Present",
-        details: "Specializing in Software Architecture, Distributed Systems, Cloud Computing, and Emerging Technologies."
+        institution: "Northumbria University, Newcastle",
+        period: "2025 - 2026",
+        details: "Specialized in Distributed Software Architectures, Enterprise Cloud Computing, and Emerging Technologies."
       },
       {
-        degree: "Bachelor of Technology",
-        institution: "Undergraduate Degree",
-        period: "Completed",
-        details: "Core Computer Science, Algorithms, Data Structures, Database Management, and Web Technologies."
+        degree: "B.Tech in Computer Science and Engineering",
+        institution: "JNTUA",
+        period: "2020 - 2024",
+        details: "Core foundations in Algorithms, Systems Engineering, Database Management, and Networking."
+      }
+    ],
+    experience: [
+      {
+        role: "Full Stack Developer",
+        institution: "Enterprise Tech Solutions",
+        period: "2024 - Present",
+        details: "Architecting cloud-native web applications, containerized microservices, and reactive user interfaces."
       }
     ],
     achievements: [
-      { title: "Full Stack Engineer", org: "Modern Web", year: "2026", icon: "Award" },
-      { title: "Cloud Architecture", org: "Distributed Systems", year: "2026", icon: "ShieldCheck" },
-      { title: "Vite & React Specialist", org: "Frontend Performance", year: "2026", icon: "Zap" }
+      { title: "Cloud Architecture Certified", org: "AWS", year: "2025", icon: "Award" },
+      { title: "Dean's Honor List", org: "Northumbria", year: "2025", icon: "ShieldCheck" }
     ]
   },
 
   skillCategories: [
     {
-      id: "languages",
-      name: "LANGUAGES",
+      id: "programming",
+      name: "LANGUAGES & CORE",
       skills: [
         { name: "TypeScript / JavaScript", level: "Advanced", icon: "Code2" },
-        { name: "Python", level: "Proficient", icon: "Terminal" },
-        { name: "HTML5 / Modern CSS", level: "Advanced", icon: "Layout" },
-        { name: "SQL", level: "Proficient", icon: "Database" }
+        { name: "Python", level: "Advanced", icon: "Terminal" },
+        { name: "Java / C#", level: "Proficient", icon: "TerminalSquare" },
+        { name: "SQL & Relational DBs", level: "Advanced", icon: "Database" }
       ]
     },
     {
       id: "frontend",
-      name: "FRONTEND",
+      name: "FRONTEND & UI",
       skills: [
-        { name: "React 18 / 19", level: "Advanced", icon: "Layers" },
-        { name: "Vite Tooling", level: "Advanced", icon: "Zap" },
-        { name: "CSS-in-JS & Glassmorphism", level: "Advanced", icon: "Palette" },
+        { name: "React / Vite / Next.js", level: "Advanced", icon: "Layout" },
+        { name: "Tailwind CSS & Styling", level: "Advanced", icon: "Palette" },
+        { name: "State Management & Redux", level: "Proficient", icon: "Layers" },
         { name: "Responsive UI/UX", level: "Advanced", icon: "Smartphone" }
       ]
     },
     {
       id: "backend",
-      name: "BACKEND & APIS",
+      name: "BACKEND & CLOUD",
       skills: [
-        { name: "Node.js & Express", level: "Proficient", icon: "Server" },
-        { name: "RESTful API Design", level: "Proficient", icon: "Network" },
-        { name: "Authentication & JWT", level: "Intermediate", icon: "Lock" }
-      ]
-    },
-    {
-      id: "infra",
-      name: "INFRA & TOOLS",
-      skills: [
-        { name: "Git & GitHub CI/CD", level: "Advanced", icon: "GitBranch" },
-        { name: "Vercel Deployment", level: "Advanced", icon: "Cloud" },
-        { name: "VS Code & Terminal", level: "Advanced", icon: "TerminalSquare" }
-      ]
-    },
-    {
-      id: "databases",
-      name: "DATABASES",
-      skills: [
-        { name: "PostgreSQL", level: "Intermediate", icon: "Database" },
-        { name: "MongoDB", level: "Intermediate", icon: "Layers" },
-        { name: "SQLite", level: "Proficient", icon: "HardDrive" }
+        { name: "Node.js / Express", level: "Advanced", icon: "Server" },
+        { name: "REST & GraphQL APIs", level: "Advanced", icon: "Network" },
+        { name: "Docker & Containers", level: "Proficient", icon: "HardDrive" },
+        { name: "AWS Cloud Services", level: "Proficient", icon: "Cloud" }
       ]
     }
   ],
@@ -119,28 +110,27 @@ export const portfolioData = {
   projects: [
     {
       id: 1,
-      title: "Netflix Themed Portfolio",
+      title: "Cinematic Portfolio Experience",
       season: "S1:E1",
       match: "99% Match",
       rating: "Top 10",
-      duration: "Active",
-      description: "Interactive Netflix UI cinematic developer portfolio built with React, Vite, and modern responsive CSS.",
-      tags: ["React", "TypeScript", "Vite", "CSS"],
+      duration: "Interactive Platform",
+      description: "A streaming-inspired developer showcase featuring custom audio orchestration, 3D card perspective flipping, and tailored user persona routing.",
+      tags: ["React", "TypeScript", "Vite", "CSS3 3D", "Web Audio API"],
       githubUrl: "https://github.com/vigneshSuprithB/my-netflix-portfolio",
-      liveUrl: "https://vigneshsuprith-portfolio.vercel.app",
       badge: "Trending #1"
     },
     {
       id: 2,
-      title: "EDUGENIE AI",
+      title: "Cloud Infrastructure Hub",
       season: "S1:E2",
-      match: "96% Match",
-      rating: "Original",
-      duration: "Completed",
-      description: "An intelligent learning and educational assistant designed to streamline study workflows and automate conceptual understanding.",
-      tags: ["Python", "AI / LLM", "Full Stack"],
-      githubUrl: "https://github.com/vigneshSuprithB/EDUGENIE_AI",
-      badge: "New Release"
+      match: "97% Match",
+      rating: "Cloud Tech",
+      duration: "System Architecture",
+      description: "Distributed backend pipeline for orchestrating containerized services with continuous monitoring, telemetry, and automated deployment scripts.",
+      tags: ["AWS", "Docker", "Node.js", "CI/CD"],
+      githubUrl: "https://github.com/vigneshSuprithB",
+      badge: "Architect"
     }
   ]
 };

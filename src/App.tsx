@@ -25,7 +25,9 @@ import {
   ShieldCheck,
   BookOpen,
   Cpu,
-  PlaySquare
+  PlaySquare,
+  RotateCw,
+  Check
 } from "lucide-react";
 import { portfolioData } from "./data";
 
@@ -49,17 +51,18 @@ const iconMap: Record<string, React.ReactNode> = {
   ShieldCheck: <ShieldCheck size={20} />,
   BookOpen: <BookOpen size={20} />,
   Cpu: <Cpu size={20} />,
-  PlaySquare: <PlaySquare size={20} />
+  PlaySquare: <PlaySquare size={20} />,
+  Check: <Check size={20} />
 };
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(false);
   const [isIntroAnimating, setIsIntroAnimating] = useState<boolean>(false);
   const [selectedProfile, setSelectedProfile] = useState<string>("Recruiter");
-  const [activeSkillTab, setActiveSkillTab] = useState<string>("languages");
+  const [activeSkillTab, setActiveSkillTab] = useState<string>("programming");
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isPhotoFlipped, setIsPhotoFlipped] = useState<boolean>(false);
 
-  // Red mouse follower
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -79,15 +82,14 @@ export default function App() {
       audio.volume = 1.0;
       audioRef.current = audio;
 
-      // Start animation precisely when audio begins playback to eliminate lag
       audio.onplay = () => {
         setIsIntroAnimating(true);
       };
 
-      // Fallback in case autoplay is delayed or blocked
       const playPromise = audio.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
+        playPromise.catch((err) => {
+          console.warn("Audio autoplay blocked by browser:", err);
           setIsIntroAnimating(true);
         });
       }
@@ -95,11 +97,11 @@ export default function App() {
       setIsIntroAnimating(true);
     }
 
-    // Exact 3.2-second transition matching the full Netflix sting
+    // 4-second animation duration to match the audio
     setTimeout(() => {
       setIsIntroAnimating(false);
       setHasEntered(true);
-    }, 3200);
+    }, 4000);
   };
 
   const scrollTo = (id: string) => {
@@ -109,7 +111,7 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", backgroundColor: "#111111", color: "#ffffff", fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
-      {/* 🔴 CRISP RED GLOWING MOUSE POINTER */}
+      {/* 🔴 Red Glow Cursor Follower */}
       <div
         style={{
           position: "fixed",
@@ -141,36 +143,71 @@ export default function App() {
         }}
       />
 
-      {/* Razor-sharp keyframe animations without blur filters */}
       <style>{`
-        @keyframes crispNetflixZoom {
+        @keyframes slowNetflixSting {
           0% {
             opacity: 0;
             transform: scale(0.85) translateZ(0);
             letter-spacing: 4px;
           }
-          15% {
-            opacity: 1;
-            transform: scale(1) translateZ(0);
-            letter-spacing: 8px;
+          24% {
+            opacity: 0;
+            transform: scale(0.88) translateZ(0);
+            letter-spacing: 5px;
           }
-          75% {
+          28% {
             opacity: 1;
-            transform: scale(1.15) translateZ(0);
+            transform: scale(0.95) translateZ(0);
+            letter-spacing: 6px;
+          }
+          72% {
+            opacity: 1;
+            transform: scale(1.12) translateZ(0);
             letter-spacing: 12px;
+          }
+          90% {
+            opacity: 0.6;
+            transform: scale(1.22) translateZ(0);
+            letter-spacing: 16px;
           }
           100% {
             opacity: 0;
-            transform: scale(1.4) translateZ(0);
-            letter-spacing: 18px;
+            transform: scale(1.3) translateZ(0);
+            letter-spacing: 20px;
           }
         }
 
-        @keyframes introFade {
-          0% { opacity: 0; }
-          10% { opacity: 1; }
+        @keyframes backdropFade {
+          0% { opacity: 1; }
           85% { opacity: 1; }
           100% { opacity: 0; }
+        }
+
+        .flip-card-container {
+          perspective: 1000px;
+          cursor: pointer;
+        }
+        .flip-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+          transform-style: preserve-3d;
+        }
+        .flip-card-inner.is-flipped {
+          transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          border-radius: 16px;
+          overflow: hidden;
+        }
+        .flip-card-back {
+          transform: rotateY(180deg);
         }
 
         @media (max-width: 768px) {
@@ -183,13 +220,13 @@ export default function App() {
           }
           .hero-photo-wrapper {
             margin: 24px auto 0 !important;
-            width: 240px !important;
-            height: 300px !important;
+            width: 250px !important;
+            height: 330px !important;
           }
         }
       `}</style>
 
-      {/* 🎬 3-SECOND CINEMATIC INTRO (SHARP & SYNCED) */}
+      {/* 🎬 4-Second Cinematic Intro Animation */}
       {isIntroAnimating && (
         <div style={{
           position: "fixed",
@@ -200,37 +237,37 @@ export default function App() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          animation: "introFade 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards"
+          animation: "backdropFade 4s ease-out forwards"
         }}>
           <h1 style={{
-            fontSize: "clamp(3.5rem, 11vw, 8rem)",
+            fontSize: "clamp(3rem, 10vw, 7rem)",
             fontWeight: 900,
             color: "#E50914",
             margin: 0,
             padding: 0,
             textTransform: "uppercase",
-            animation: "crispNetflixZoom 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards",
-            textShadow: "0 0 30px rgba(229, 9, 20, 0.6), 0 0 80px rgba(229, 9, 20, 0.3)",
+            animation: "slowNetflixSting 4s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+            textShadow: "0 0 30px rgba(229, 9, 20, 0.7), 0 0 80px rgba(229, 9, 20, 0.4)",
             backfaceVisibility: "hidden",
             WebkitFontSmoothing: "antialiased"
           }}>
             VIGNESH
           </h1>
           <div style={{
-            marginTop: "20px",
+            marginTop: "24px",
             color: "#888",
-            letterSpacing: "6px",
+            letterSpacing: "8px",
             fontSize: "13px",
             fontWeight: 700,
             textTransform: "uppercase",
-            opacity: 0.9
+            animation: "slowNetflixSting 4s cubic-bezier(0.25, 1, 0.5, 1) forwards"
           }}>
-            ORIGINAL
+            AN ORIGINAL DOSSIER
           </div>
         </div>
       )}
 
-      {/* PROFILE GATE SCREEN */}
+      {/* Profile Gate Screen */}
       {!hasEntered && !isIntroAnimating && (
         <div style={{
           minHeight: "100vh",
@@ -259,9 +296,9 @@ export default function App() {
           }}>
             {[
               { name: "Recruiter", color: "#E50914", bg: "#B81D24" },
-              { name: "Tech Lead", color: "#1E88E5", bg: "#1565C0" },
-              { name: "Developer", color: "#43A047", bg: "#2E7D32" },
-              { name: "Guest", color: "#FB8C00", bg: "#E65100" }
+              { name: "Engineering Lead", color: "#1E88E5", bg: "#1565C0" },
+              { name: "Collaborator", color: "#43A047", bg: "#2E7D32" },
+              { name: "Tech Explorer", color: "#FB8C00", bg: "#E65100" }
             ].map((profile) => (
               <div
                 key={profile.name}
@@ -300,7 +337,7 @@ export default function App() {
                 >
                   {profile.name[0]}
                 </div>
-                <span style={{ color: "#aaa", fontSize: "16px" }}>{profile.name}</span>
+                <span style={{ color: "#aaa", fontSize: "16px", textAlign: "center" }}>{profile.name}</span>
               </div>
             ))}
           </div>
@@ -326,9 +363,10 @@ export default function App() {
         </div>
       )}
 
-      {/* MAIN PORTFOLIO */}
+      {/* Main Portfolio */}
       {hasEntered && (
         <div style={{ minHeight: "100vh", overflowX: "hidden" }}>
+          {/* Header */}
           <header style={{
             position: "fixed",
             top: 0,
@@ -339,19 +377,21 @@ export default function App() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 clamp(16px, 4vw, 48px)",
-            background: "linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 80%, rgba(0,0,0,0) 100%)",
-            backdropFilter: "blur(12px)"
+            padding: "0 clamp(12px, 3vw, 40px)",
+            background: "linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0) 100%)",
+            backdropFilter: "blur(12px)",
+            boxSizing: "border-box"
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "24px", minWidth: 0, flexShrink: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", minWidth: 0, flexShrink: 1 }}>
               <span
                 style={{
                   color: "#E50914",
-                  fontSize: "clamp(20px, 4vw, 26px)",
+                  fontSize: "clamp(20px, 4.5vw, 26px)",
                   fontWeight: 900,
                   letterSpacing: "2px",
                   cursor: "pointer",
-                  whiteSpace: "nowrap"
+                  whiteSpace: "nowrap",
+                  flexShrink: 0
                 }}
                 onClick={() => scrollTo("hero")}
               >
@@ -376,31 +416,38 @@ export default function App() {
               </nav>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              flexShrink: 0,
+              marginLeft: "auto"
+            }}>
               <button
                 onClick={() => setIsMuted(!isMuted)}
                 title={isMuted ? "Unmute Sound" : "Mute Sound"}
                 style={{
-                  background: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.25)",
                   color: "#fff",
                   borderRadius: "50%",
-                  width: "34px",
-                  height: "34px",
+                  width: "36px",
+                  height: "36px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  flexShrink: 0
                 }}
               >
-                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
               </button>
               <div
                 onClick={() => setHasEntered(false)}
                 title="Switch profile"
                 style={{
-                  width: "34px",
-                  height: "34px",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "4px",
                   background: "#E50914",
                   display: "flex",
@@ -408,7 +455,9 @@ export default function App() {
                   justifyContent: "center",
                   fontWeight: "bold",
                   cursor: "pointer",
-                  fontSize: "14px"
+                  fontSize: "15px",
+                  flexShrink: 0,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.4)"
                 }}
               >
                 {selectedProfile[0]}
@@ -416,7 +465,7 @@ export default function App() {
             </div>
           </header>
 
-          {/* 1. HERO BILLBOARD WITH PHOTO */}
+          {/* 1. HERO BILLBOARD */}
           <section
             id="hero"
             style={{
@@ -547,35 +596,127 @@ export default function App() {
                 </div>
               </div>
 
-              {/* my-photo.jpg */}
+              {/* 3D Rotating & Flipping Photo Card */}
               <div
-                className="hero-photo-wrapper"
+                className="hero-photo-wrapper flip-card-container"
+                onClick={() => setIsPhotoFlipped(!isPhotoFlipped)}
+                title="Click or tap to flip profile dossier!"
                 style={{
-                  position: "relative",
-                  width: "340px",
+                  width: "320px",
                   height: "440px",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.8)",
-                  border: "2px solid rgba(255, 255, 255, 0.12)",
                   flexShrink: 0
                 }}
               >
-                <img
-                  src={portfolioData.hero.photo}
-                  alt={portfolioData.hero.title}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center top"
-                  }}
-                />
-                <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(17,17,17,0.85) 0%, transparent 40%), linear-gradient(to right, rgba(17,17,17,0.5) 0%, transparent 25%)"
-                }} />
+                <div className={`flip-card-inner ${isPhotoFlipped ? "is-flipped" : ""}`}>
+                  {/* FRONT */}
+                  <div
+                    className="flip-card-front"
+                    style={{
+                      boxShadow: "0 20px 50px rgba(0,0,0,0.8)",
+                      border: "2px solid rgba(255, 255, 255, 0.12)"
+                    }}
+                  >
+                    <img
+                      src={portfolioData.hero.photo}
+                      alt={portfolioData.hero.title}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center top"
+                      }}
+                    />
+                    <div style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(to top, rgba(17,17,17,0.85) 0%, transparent 40%), linear-gradient(to right, rgba(17,17,17,0.5) 0%, transparent 25%)"
+                    }} />
+
+                    <div style={{
+                      position: "absolute",
+                      bottom: "16px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      background: "rgba(0,0,0,0.75)",
+                      padding: "6px 14px",
+                      borderRadius: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontSize: "12px",
+                      color: "#ddd",
+                      border: "1px solid rgba(255,255,255,0.2)"
+                    }}>
+                      <RotateCw size={13} color="#E50914" />
+                      <span>Tap to Flip Dossier</span>
+                    </div>
+                  </div>
+
+                  {/* BACK */}
+                  <div
+                    className="flip-card-back"
+                    style={{
+                      background: "linear-gradient(145deg, #1f0103 0%, #161616 100%)",
+                      border: "2px solid #E50914",
+                      boxShadow: "0 20px 50px rgba(229,9,20,0.3)",
+                      padding: "28px 24px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      boxSizing: "border-box"
+                    }}
+                  >
+                    <div>
+                      <div style={{
+                        display: "inline-block",
+                        background: "#E50914",
+                        color: "#fff",
+                        fontSize: "11px",
+                        fontWeight: 800,
+                        padding: "3px 8px",
+                        borderRadius: "3px",
+                        letterSpacing: "1px",
+                        marginBottom: "12px"
+                      }}>
+                        DEVELOPER DOSSIER
+                      </div>
+                      <h3 style={{ fontSize: "22px", fontWeight: 900, margin: "0 0 6px 0", color: "#fff" }}>
+                        Vignesh Suprith
+                      </h3>
+                      <p style={{ color: "#aaa", fontSize: "13px", margin: "0 0 16px 0" }}>
+                        MSc Computing and Technologies
+                      </p>
+
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12.5px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a", paddingBottom: "5px" }}>
+                          <span style={{ color: "#777" }}>Core Focus</span>
+                          <span style={{ color: "#eee", fontWeight: 600 }}>Full Stack & Cloud</span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a", paddingBottom: "5px" }}>
+                          <span style={{ color: "#777" }}>Stack</span>
+                          <span style={{ color: "#eee", fontWeight: 600 }}>React, Node, AWS</span>
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #2a2a2a", paddingBottom: "5px" }}>
+                          <span style={{ color: "#777" }}>Status</span>
+                          <span style={{ color: "#46d369", fontWeight: 700 }}>Open for Roles</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      textAlign: "center",
+                      color: "#aaa",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px"
+                    }}>
+                      <RotateCw size={13} color="#E50914" />
+                      <span>Tap to flip back</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -618,7 +759,7 @@ export default function App() {
           {/* 3. THE FULL STORY */}
           <section id="story" style={{ padding: "40px clamp(16px, 5vw, 64px)" }}>
             <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "20px", color: "#e5e5e5" }}>
-              The Full Story
+              The Full Story: Education & Background
             </h2>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
@@ -629,7 +770,7 @@ export default function App() {
                 padding: "24px"
               }}>
                 <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#E50914", marginBottom: "16px" }}>
-                  Education Timeline
+                  Academic Timeline
                 </h3>
                 {portfolioData.story.education.map((item, idx) => (
                   <div key={idx} style={{ marginBottom: "20px", borderLeft: "2px solid #E50914", paddingLeft: "16px" }}>
@@ -647,9 +788,16 @@ export default function App() {
                 padding: "24px"
               }}>
                 <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#E50914", marginBottom: "16px" }}>
-                  Focus Areas & Certifications
+                  Industry Roles & Milestones
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  {portfolioData.story.experience.map((item, idx) => (
+                    <div key={idx} style={{ background: "rgba(40,40,40,0.5)", padding: "14px 18px", borderRadius: "8px" }}>
+                      <div style={{ fontSize: "15px", fontWeight: 700 }}>{item.role}</div>
+                      <div style={{ fontSize: "13px", color: "#E50914" }}>{item.institution} • {item.period}</div>
+                      <div style={{ fontSize: "13px", color: "#bbb", marginTop: "6px" }}>{item.details}</div>
+                    </div>
+                  ))}
                   {portfolioData.story.achievements.map((item, idx) => (
                     <div
                       key={idx}
@@ -657,8 +805,8 @@ export default function App() {
                         display: "flex",
                         alignItems: "center",
                         gap: "16px",
-                        background: "rgba(40,40,40,0.5)",
-                        padding: "14px 18px",
+                        background: "rgba(35,35,35,0.4)",
+                        padding: "12px 18px",
                         borderRadius: "8px"
                       }}
                     >
@@ -666,8 +814,8 @@ export default function App() {
                         {iconMap[item.icon] || <Award size={20} />}
                       </div>
                       <div>
-                        <div style={{ fontSize: "15px", fontWeight: 700 }}>{item.title}</div>
-                        <div style={{ fontSize: "13px", color: "#888" }}>{item.org} • {item.year}</div>
+                        <div style={{ fontSize: "14px", fontWeight: 700 }}>{item.title}</div>
+                        <div style={{ fontSize: "12px", color: "#888" }}>{item.org} • {item.year}</div>
                       </div>
                     </div>
                   ))}
@@ -676,7 +824,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 4. MY SKILL UNIVERSE */}
+          {/* 4. SKILLS UNIVERSE */}
           <section id="skills" style={{ padding: "40px clamp(16px, 5vw, 64px)" }}>
             <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "20px", color: "#e5e5e5" }}>
               My Skill Universe
@@ -706,8 +854,8 @@ export default function App() {
                         background: active ? "#E50914" : "rgba(35, 35, 35, 0.6)",
                         color: active ? "#ffffff" : "#aaa",
                         fontWeight: 700,
-                        fontSize: "14px",
-                        letterSpacing: "1px",
+                        fontSize: "13px",
+                        letterSpacing: "0.5px",
                         cursor: "pointer"
                       }}
                     >
@@ -772,7 +920,7 @@ export default function App() {
                   }}
                 >
                   <div style={{
-                    height: "160px",
+                    minHeight: "140px",
                     background: "linear-gradient(135deg, #1f0103 0%, #300c0f 50%, #111 100%)",
                     padding: "20px",
                     display: "flex",
@@ -792,7 +940,7 @@ export default function App() {
                       </span>
                       <span style={{ fontSize: "12px", color: "#aaa" }}>{project.season}</span>
                     </div>
-                    <h3 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>{project.title}</h3>
+                    <h3 style={{ fontSize: "18px", fontWeight: 800, margin: "10px 0 0 0" }}>{project.title}</h3>
                   </div>
 
                   <div style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
@@ -801,7 +949,7 @@ export default function App() {
                       <span style={{ color: "#888" }}>{project.duration}</span>
                     </div>
 
-                    <p style={{ fontSize: "14px", color: "#bbb", lineHeight: 1.5, flex: 1, marginBottom: "16px" }}>
+                    <p style={{ fontSize: "13.5px", color: "#bbb", lineHeight: 1.5, flex: 1, marginBottom: "16px" }}>
                       {project.description}
                     </p>
 
@@ -811,7 +959,7 @@ export default function App() {
                           key={i}
                           style={{
                             background: "rgba(255,255,255,0.06)",
-                            fontSize: "12px",
+                            fontSize: "11px",
                             padding: "3px 8px",
                             borderRadius: "4px",
                             color: "#ccc"
@@ -843,32 +991,8 @@ export default function App() {
                           gap: "6px"
                         }}
                       >
-                        <Code2 size={16} /> Code
+                        <Code2 size={16} /> GitHub Repo
                       </a>
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          style={{
-                            flex: 1,
-                            textAlign: "center",
-                            background: "#E50914",
-                            color: "#fff",
-                            textDecoration: "none",
-                            padding: "10px",
-                            borderRadius: "6px",
-                            fontSize: "13px",
-                            fontWeight: 600,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "6px"
-                          }}
-                        >
-                          <Play size={14} fill="#fff" /> Live
-                        </a>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -876,7 +1000,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 6. TO BE CONTINUED... OUTRO */}
+          {/* 6. TO BE CONTINUED */}
           <section
             id="contact"
             style={{
@@ -912,11 +1036,11 @@ export default function App() {
               fontSize: "16px",
               lineHeight: 1.6
             }}>
-              Looking to collaborate on exciting web applications or explore graduate opportunities?
+              Open for full-stack engineering roles, distributed cloud development, and technical collaborations.
             </p>
 
             <a
-              href="mailto:vigneshsuprithb@gmail.com"
+              href="mailto:vigneshsuprith@gmail.com"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
