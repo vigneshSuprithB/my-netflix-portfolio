@@ -3,7 +3,7 @@ export const myPortfolio = {
   title: "MSc Computing & Technology",
   subtitle: "FULL-STACK DEVELOPER • CLOUD • SOFTWARE ENGINEERING",
   bio: "MSc Computing & Technologies student passionate about building scalable web applications, modern software systems, and intelligent tools.",
-  heroImage: "/my-photo.jpeg",
+  heroImage: "/my-photo.jpg",
   resumeUrl: "/resume.pdf",
   socials: {
     github: "https://github.com/vigneshSuprithB",
