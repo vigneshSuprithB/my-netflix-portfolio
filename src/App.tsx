@@ -1,24 +1,46 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { myPortfolio } from './data';
-import { Play, FileText, ExternalLink, GraduationCap, Briefcase } from 'lucide-react';
+import { 
+  Play, 
+  FileText, 
+  ExternalLink, 
+  GraduationCap, 
+  Briefcase, 
+  Award, 
+  Trophy, 
+  User, 
+  Mail, 
+  MapPin, 
+  Flame 
+} from 'lucide-react';
 
 export default function App() {
+  const [profileSelected, setProfileSelected] = useState(false);
+  const [showIntroVideo, setShowIntroVideo] = useState(false);
   const [entered, setEntered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Play local authentic Netflix sound
   const handleProfileSelect = () => {
-    try {
-      const audio = new Audio('/netflix.mp3');
-      audio.volume = 0.7;
-      audio.play().catch(() => {});
-    } catch {
-      // Ignore audio errors
-    }
+    setProfileSelected(true);
+    setShowIntroVideo(true);
+
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {
+          handleIntroEnd();
+        });
+      }
+    }, 50);
+  };
+
+  const handleIntroEnd = () => {
+    setShowIntroVideo(false);
     setEntered(true);
   };
 
-  // Netflix Profile Selection Screen ("Who's watching?")
-  if (!entered) {
+  // 1. Netflix Profile Gate
+  if (!profileSelected) {
     return (
       <div style={{
         minHeight: '100vh',
@@ -79,10 +101,52 @@ export default function App() {
     );
   }
 
-  // Main Dark Glass Netflix Portfolio with Entry Animations
+  // 2. Video Intro Screen
+  if (showIntroVideo && !entered) {
+    return (
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: '#000000',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <video
+          ref={videoRef}
+          src="https://raw.githubusercontent.com/vigneshSuprithB/assets/main/netflix-intro.mp4"
+          onEnded={handleIntroEnd}
+          playsInline
+          style={{ width: '100vw', height: '100vh', objectFit: 'contain' }}
+        />
+        <button
+          onClick={handleIntroEnd}
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            right: '40px',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            color: '#ffffff',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            padding: '8px 20px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: 600,
+            backdropFilter: 'blur(6px)'
+          }}
+        >
+          Skip Intro
+        </button>
+      </div>
+    );
+  }
+
+  // 3. Main Netflix Portfolio App
   return (
-    <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '5rem' }}>
-      {/* Frosted Glass Navbar */}
+    <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '6rem' }}>
+      {/* Sticky Glass Navbar */}
       <nav style={{
         position: 'sticky',
         top: 0,
@@ -100,11 +164,13 @@ export default function App() {
           <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
-          <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.9rem', flexWrap: 'wrap' }}>
             <a href="#about" style={{ color: '#e5e5e5', textDecoration: 'none' }}>Home</a>
+            <a href="#about-me" style={{ color: '#aaa', textDecoration: 'none' }}>Overview</a>
             <a href="#projects" style={{ color: '#aaa', textDecoration: 'none' }}>Episodes</a>
-            <a href="#background" style={{ color: '#aaa', textDecoration: 'none' }}>Background</a>
-            <a href="#skills" style={{ color: '#aaa', textDecoration: 'none' }}>Skills</a>
+            <a href="#top-tech" style={{ color: '#aaa', textDecoration: 'none' }}>Top 10</a>
+            <a href="#background" style={{ color: '#aaa', textDecoration: 'none' }}>History</a>
+            <a href="#honors" style={{ color: '#aaa', textDecoration: 'none' }}>Honors</a>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
@@ -115,22 +181,21 @@ export default function App() {
             LinkedIn
           </a>
           <button
-            onClick={() => setEntered(false)}
+            onClick={() => {
+              setProfileSelected(false);
+              setEntered(false);
+            }}
             style={{
               background: 'rgba(255, 255, 255, 0.08)',
               color: '#fff',
               border: '1px solid rgba(255, 255, 255, 0.12)',
               backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
               padding: '6px 14px',
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '0.8rem',
-              fontWeight: 500,
-              transition: 'background-color 0.2s ease'
+              fontWeight: 500
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
           >
             Switch Profile
           </button>
@@ -187,17 +252,7 @@ export default function App() {
                 padding: '0.8rem 1.8rem',
                 borderRadius: '6px',
                 fontWeight: 700,
-                textDecoration: 'none',
-                boxShadow: '0 4px 14px rgba(255, 255, 255, 0.15)',
-                transition: 'transform 0.2s ease, background-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.04)';
-                e.currentTarget.style.backgroundColor = '#e6e6e6';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1.0)';
-                e.currentTarget.style.backgroundColor = '#ffffff';
+                textDecoration: 'none'
               }}
             >
               <Play size={18} fill="#000" /> View Episodes
@@ -212,22 +267,12 @@ export default function App() {
                 gap: '0.5rem',
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255, 255, 255, 0.15)',
                 color: '#ffffff',
                 padding: '0.8rem 1.8rem',
                 borderRadius: '6px',
                 fontWeight: 700,
-                textDecoration: 'none',
-                transition: 'transform 0.2s ease, background-color 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.04)';
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.18)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1.0)';
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                textDecoration: 'none'
               }}
             >
               <FileText size={18} /> View CV
@@ -235,17 +280,16 @@ export default function App() {
           </div>
         </div>
 
-        {/* Frosted Glass Photo Card */}
+        {/* Frosted Photo Card */}
         <div style={{
           width: '280px',
           height: '360px',
           backgroundColor: 'rgba(255, 255, 255, 0.03)',
           backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
           borderRadius: '16px',
           overflow: 'hidden',
           border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
           flexShrink: 0
         }}>
           <img
@@ -256,8 +300,38 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Projects / Episodes (Animated Glass Cards) */}
-      <section id="projects" style={{ maxWidth: '1150px', margin: '3rem auto 0', padding: '0 2rem' }}>
+      {/* NEW: About Me / Plot Summary */}
+      <section id="about-me" style={{ maxWidth: '1150px', margin: '3rem auto 0', padding: '0 2rem' }}>
+        <div
+          className="netflix-card"
+          style={{
+            backgroundColor: 'rgba(24, 24, 27, 0.5)',
+            backdropFilter: 'blur(14px)',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            padding: '2rem 2.5rem',
+            textAlign: 'left'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '0.75rem' }}>
+            <User size={20} />
+            <span style={{ fontSize: '0.85rem', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase' }}>
+              Series Overview & Storyline
+            </span>
+          </div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '1rem' }}>Behind the Developer</h2>
+          <p style={{ color: '#bbb', fontSize: '1.05rem', lineHeight: '1.7', maxWidth: '900px', marginBottom: '1.5rem' }}>
+            {myPortfolio.aboutExtended}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem' }}>
+            <MapPin size={16} color="#E50914" />
+            <span>Based in {myPortfolio.location} • Actively Open to Software Engineering Opportunities</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects / Episodes */}
+      <section id="projects" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Season 1: Featured Projects
         </h2>
@@ -269,11 +343,9 @@ export default function App() {
               style={{
                 backgroundColor: 'rgba(24, 24, 27, 0.55)',
                 backdropFilter: 'blur(14px)',
-                WebkitBackdropFilter: 'blur(14px)',
                 padding: '1.8rem',
                 borderRadius: '12px',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -328,23 +400,66 @@ export default function App() {
         </div>
       </section>
 
-      {/* Education & Experience Rows */}
+      {/* NEW: Top 10 Today Tech Stack */}
+      <section id="top-tech" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+          <Flame size={24} color="#E50914" />
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, margin: 0 }}>
+            Top 10 Today in Tech Stack
+          </h2>
+        </div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '1rem'
+        }}>
+          {myPortfolio.topTech.map((item, idx) => (
+            <div
+              key={idx}
+              className="netflix-card"
+              style={{
+                backgroundColor: 'rgba(24, 24, 27, 0.45)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                padding: '1rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <span style={{
+                fontSize: '2.5rem',
+                fontWeight: 900,
+                color: '#E50914',
+                lineHeight: 1,
+                letterSpacing: '-2px'
+              }}>
+                {idx + 1}
+              </span>
+              <span style={{ fontSize: '1rem', fontWeight: 600, color: '#e5e5e5' }}>
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Behind the Scenes: Education & Experience */}
       <section id="background" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Behind the Scenes: Background
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {/* Education Card */}
+          {/* Education */}
           <div
             className="netflix-card"
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
               padding: '1.8rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
               textAlign: 'left'
             }}
           >
@@ -364,17 +479,15 @@ export default function App() {
             ))}
           </div>
 
-          {/* Experience Card */}
+          {/* Experience */}
           <div
             className="netflix-card"
             style={{
               backgroundColor: 'rgba(24, 24, 27, 0.45)',
               backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
               padding: '1.8rem',
               borderRadius: '12px',
               border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
               textAlign: 'left'
             }}
           >
@@ -396,10 +509,74 @@ export default function App() {
         </div>
       </section>
 
-      {/* Tech Skills */}
+      {/* NEW: Achievements & Certifications ("Awards & Nominations") */}
+      <section id="honors" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
+        <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+          Awards & Certifications
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+          {/* Achievements */}
+          <div
+            className="netflix-card"
+            style={{
+              backgroundColor: 'rgba(24, 24, 27, 0.45)',
+              backdropFilter: 'blur(12px)',
+              padding: '1.8rem',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              textAlign: 'left'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
+              <Trophy size={22} />
+              <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Key Milestones</h3>
+            </div>
+            {myPortfolio.achievements?.map((ach, idx) => (
+              <div key={idx} style={{ marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 600 }}>{ach.title}</h4>
+                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{ach.period}</span>
+                </div>
+                <p style={{ color: '#E50914', fontSize: '0.8rem', fontWeight: 600, margin: '2px 0 4px' }}>{ach.subtitle}</p>
+                <p style={{ color: '#777', fontSize: '0.82rem', lineHeight: '1.4' }}>{ach.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Certifications */}
+          <div
+            className="netflix-card"
+            style={{
+              backgroundColor: 'rgba(24, 24, 27, 0.45)',
+              backdropFilter: 'blur(12px)',
+              padding: '1.8rem',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              textAlign: 'left'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
+              <Award size={22} />
+              <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Official Certifications</h3>
+            </div>
+            {myPortfolio.certifications?.map((cert, idx) => (
+              <div key={idx} style={{ marginBottom: '1.2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <h4 style={{ fontSize: '0.98rem', fontWeight: 600 }}>{cert.name}</h4>
+                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{cert.year}</span>
+                </div>
+                <p style={{ color: '#aaa', fontSize: '0.82rem', margin: '3px 0 2px' }}>{cert.issuer}</p>
+                <span style={{ color: '#666', fontSize: '0.75rem', fontFamily: 'monospace' }}>ID: {cert.id}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Skills Cloud */}
       <section id="skills" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
-          Tech Universe
+          Additional Tech Universe
         </h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
           {myPortfolio.skills.map((skill, idx) => (
@@ -409,20 +586,81 @@ export default function App() {
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 padding: '0.6rem 1.2rem',
                 borderRadius: '20px',
                 fontSize: '0.9rem',
                 color: '#e5e5e5',
                 fontWeight: 500,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                 cursor: 'default'
               }}
             >
               {skill}
             </span>
           ))}
+        </div>
+      </section>
+
+      {/* NEW: Get in Touch / Press Inquiries */}
+      <section style={{ maxWidth: '1150px', margin: '5rem auto 0', padding: '0 2rem' }}>
+        <div
+          className="netflix-card"
+          style={{
+            backgroundColor: 'rgba(24, 24, 27, 0.6)',
+            backdropFilter: 'blur(16px)',
+            borderRadius: '16px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <span style={{ color: '#E50914', fontSize: '0.85rem', fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+            Production Inquiries
+          </span>
+          <h2 style={{ fontSize: '2.4rem', fontWeight: 900, margin: '0.5rem 0 1rem' }}>Ready to Collaborate?</h2>
+          <p style={{ color: '#aaa', fontSize: '1.05rem', maxWidth: '550px', marginBottom: '2rem' }}>
+            Interested in hiring for a role, discussing a software project, or viewing code repositories? Send a direct message.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <a
+              href={myPortfolio.socials.email}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                backgroundColor: '#E50914',
+                color: '#ffffff',
+                padding: '0.85rem 2rem',
+                borderRadius: '6px',
+                fontWeight: 700,
+                textDecoration: 'none'
+              }}
+            >
+              <Mail size={18} /> Send Email
+            </a>
+            <a
+              href={myPortfolio.socials.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#ffffff',
+                padding: '0.85rem 2rem',
+                borderRadius: '6px',
+                fontWeight: 700,
+                textDecoration: 'none'
+              }}
+            >
+              Connect on LinkedIn
+            </a>
+          </div>
         </div>
       </section>
     </div>
