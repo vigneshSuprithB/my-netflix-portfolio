@@ -146,61 +146,59 @@ export default function App() {
   return (
     <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '6rem' }}>
       {/* Responsive Netflix Frosted Glass Navbar */}
+      {/* Responsive Netflix Frosted Glass Navbar */}
       <nav className="nav-container">
-        {/* Top Header Row */}
-        <div className="nav-top-row">
-          <span style={{ color: '#E50914', fontSize: '1.7rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', flexWrap: 'wrap' }}>
+          <span style={{ color: '#E50914', fontSize: '1.75rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
-          <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-            <a 
-              href={myPortfolio.socials.github} 
-              target="_blank" 
-              rel="noreferrer" 
-              style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
-            >
-              GitHub
-            </a>
-            <a 
-              href={myPortfolio.socials.linkedin} 
-              target="_blank" 
-              rel="noreferrer" 
-              style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
-            >
-              LinkedIn
-            </a>
-            <button
-              onClick={() => {
-                setProfileSelected(false);
-                setEntered(false);
-              }}
-              style={{
-                background: 'rgba(255, 255, 255, 0.08)',
-                color: '#fff',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                padding: '5px 12px',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '0.75rem',
-                fontWeight: 600
-              }}
-            >
-              Switch
-            </button>
+          <div className="nav-categories">
+            <a href="#about" className="nav-chip">Home</a>
+            <a href="#about-me" className="nav-chip">Overview</a>
+            <a href="#projects" className="nav-chip">Episodes</a>
+            <a href="#top-tech" className="nav-chip">Top 10</a>
+            <a href="#background" className="nav-chip">History</a>
+            <a href="#honors" className="nav-chip">Honors</a>
+            <a href="#skills" className="nav-chip">Skills</a>
           </div>
         </div>
 
-        {/* Categories / Navigation Chips (Horizontally Scrollable on Mobile) */}
-        <div className="nav-categories">
-          <a href="#about" className="nav-chip">Home</a>
-          <a href="#about-me" className="nav-chip">Overview</a>
-          <a href="#projects" className="nav-chip">Episodes</a>
-          <a href="#top-tech" className="nav-chip">Top 10</a>
-          <a href="#background" className="nav-chip">History</a>
-          <a href="#honors" className="nav-chip">Honors</a>
-          <a href="#skills" className="nav-chip">Skills</a>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <a 
+            href={myPortfolio.socials.github} 
+            target="_blank" 
+            rel="noreferrer" 
+            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+          >
+            GitHub
+          </a>
+          <a 
+            href={myPortfolio.socials.linkedin} 
+            target="_blank" 
+            rel="noreferrer" 
+            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}
+          >
+            LinkedIn
+          </a>
+          <button
+            onClick={() => {
+              setProfileSelected(false);
+              setEntered(false);
+            }}
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#fff',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              backdropFilter: 'blur(8px)',
+              padding: '6px 14px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              fontWeight: 600
+            }}
+          >
+            Switch
+          </button>
         </div>
       </nav>
 
