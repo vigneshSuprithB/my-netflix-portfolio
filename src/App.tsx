@@ -1,38 +1,25 @@
 import { useState } from 'react';
 import { myPortfolio } from './data';
-import { Play, FileText, ExternalLink, GraduationCap, Briefcase, Volume2, VolumeX } from 'lucide-react';
+import { Play, FileText, ExternalLink, GraduationCap, Briefcase } from 'lucide-react';
 
 export default function App() {
   const [entered, setEntered] = useState(false);
-  const [muted, setMuted] = useState(false);
 
-  // Authentic Netflix Ta-Dum sound
-  const playNetflixSound = () => {
-    if (muted) return;
-    try {
-      const audio = new Audio('https://raw.githubusercontent.com/vigneshSuprithB/assets/main/netflix.mp3');
-      audio.volume = 0.7;
-      
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Fallback to direct secondary reliable mirror if network blocks
-          const fallbackAudio = new Audio('https://assets.ctfassets.net/4cd45etpfsq4/4MeAqh89qmgcqmEk8eG24m/50453531b2ecda7cf0743f05560a6fc3/netflix-sound.mp3');
-          fallbackAudio.volume = 0.7;
-          fallbackAudio.play().catch(() => {});
-        });
-      }
-    } catch {
-      // Graceful fallback
-    }
-  };
-
+  // Play local authentic Netflix sound
   const handleProfileSelect = () => {
-    playNetflixSound();
+    try {
+      const audio = new Audio('/netflix.mp3');
+      audio.volume = 0.7;
+      audio.play().catch(() => {
+        // Fallback if browser blocks sound
+      });
+    } catch {
+      // Ignore audio errors
+    }
     setEntered(true);
   };
 
-  // Netflix Profile Gate ("Who's watching?")
+  // Netflix Profile Selection Screen ("Who's watching?")
   if (!entered) {
     return (
       <div style={{
@@ -123,21 +110,6 @@ export default function App() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-          <button
-            onClick={() => setMuted(!muted)}
-            title={muted ? 'Unmute audio' : 'Mute audio'}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: muted ? '#777' : '#E50914',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              padding: '4px'
-            }}
-          >
-            {muted ? <VolumeX size={19} /> : <Volume2 size={19} />}
-          </button>
           <a href={myPortfolio.socials.github} target="_blank" rel="noreferrer" style={{ color: '#aaa', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem' }}>
             GitHub
           </a>
