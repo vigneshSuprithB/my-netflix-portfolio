@@ -204,7 +204,7 @@ export default function App() {
             letterSpacing: "2px",
             cursor: "pointer"
           }} onClick={() => scrollTo("hero")}>
-            NETFLIX
+            V I G N E S H
           </span>
           <nav style={{ display: "flex", gap: "20px", fontSize: "14px", color: "#e5e5e5" }}>
             <span style={{ cursor: "pointer" }} onClick={() => scrollTo("hero")}>Home</span>
