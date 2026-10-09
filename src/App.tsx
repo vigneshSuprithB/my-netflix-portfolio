@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Play,
   Info,
@@ -61,6 +61,7 @@ export default function App() {
 
   // Red mouse follower
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -73,19 +74,32 @@ export default function App() {
   const handleSelectProfile = (name: string) => {
     setSelectedProfile(name);
 
-    // Play netflix.mp3 from public folder
-    if (!isMuted && portfolioData.hero.audio) {
+    if (portfolioData.hero.audio && !isMuted) {
       const audio = new Audio(portfolioData.hero.audio);
-      audio.volume = 0.8;
-      audio.play().catch((err) => console.log("Audio play error:", err));
+      audio.volume = 1.0;
+      audioRef.current = audio;
+
+      // Start animation precisely when audio begins playback to eliminate lag
+      audio.onplay = () => {
+        setIsIntroAnimating(true);
+      };
+
+      // Fallback in case autoplay is delayed or blocked
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          setIsIntroAnimating(true);
+        });
+      }
+    } else {
+      setIsIntroAnimating(true);
     }
 
-    // 3-second cinematic zoom intro
-    setIsIntroAnimating(true);
+    // Exact 3.2-second transition matching the full Netflix sting
     setTimeout(() => {
       setIsIntroAnimating(false);
       setHasEntered(true);
-    }, 3000);
+    }, 3200);
   };
 
   const scrollTo = (id: string) => {
@@ -95,7 +109,7 @@ export default function App() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh", backgroundColor: "#111111", color: "#ffffff", fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
-      {/* 🔴 RED GLOWING MOUSE POINTER */}
+      {/* 🔴 CRISP RED GLOWING MOUSE POINTER */}
       <div
         style={{
           position: "fixed",
@@ -108,7 +122,7 @@ export default function App() {
           pointerEvents: "none",
           zIndex: 9999,
           boxShadow: "0 0 16px 4px rgba(229, 9, 20, 0.8)",
-          transition: "transform 0.05s ease-out"
+          transform: "translateZ(0)"
         }}
       />
       <div
@@ -122,22 +136,43 @@ export default function App() {
           border: "2px solid rgba(229, 9, 20, 0.4)",
           pointerEvents: "none",
           zIndex: 9998,
-          transition: "transform 0.15s ease-out, top 0.15s ease-out, left 0.15s ease-out"
+          transition: "transform 0.1s ease-out, top 0.1s ease-out, left 0.1s ease-out",
+          transform: "translateZ(0)"
         }}
       />
 
+      {/* Razor-sharp keyframe animations without blur filters */}
       <style>{`
-        @keyframes netflixZoom {
-          0% { transform: scale(0.6); opacity: 0; filter: blur(10px); }
-          50% { transform: scale(1.1); opacity: 1; filter: blur(0px); letter-spacing: 12px; }
-          100% { transform: scale(1.4); opacity: 0; filter: blur(6px); letter-spacing: 20px; }
+        @keyframes crispNetflixZoom {
+          0% {
+            opacity: 0;
+            transform: scale(0.85) translateZ(0);
+            letter-spacing: 4px;
+          }
+          15% {
+            opacity: 1;
+            transform: scale(1) translateZ(0);
+            letter-spacing: 8px;
+          }
+          75% {
+            opacity: 1;
+            transform: scale(1.15) translateZ(0);
+            letter-spacing: 12px;
+          }
+          100% {
+            opacity: 0;
+            transform: scale(1.4) translateZ(0);
+            letter-spacing: 18px;
+          }
         }
-        @keyframes fadeInOut {
+
+        @keyframes introFade {
           0% { opacity: 0; }
-          20% { opacity: 1; }
-          80% { opacity: 1; }
+          10% { opacity: 1; }
+          85% { opacity: 1; }
           100% { opacity: 0; }
         }
+
         @media (max-width: 768px) {
           .portfolio-desktop-nav {
             display: none !important;
@@ -154,7 +189,7 @@ export default function App() {
         }
       `}</style>
 
-      {/* 🎬 3-SECOND CINEMATIC INTRO ANIMATION */}
+      {/* 🎬 3-SECOND CINEMATIC INTRO (SHARP & SYNCED) */}
       {isIntroAnimating && (
         <div style={{
           position: "fixed",
@@ -165,31 +200,37 @@ export default function App() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          animation: "fadeInOut 3s forwards"
+          animation: "introFade 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards"
         }}>
           <h1 style={{
-            fontSize: "clamp(3rem, 10vw, 7rem)",
+            fontSize: "clamp(3.5rem, 11vw, 8rem)",
             fontWeight: 900,
             color: "#E50914",
-            letterSpacing: "6px",
-            animation: "netflixZoom 3s ease-out forwards",
-            textShadow: "0 0 40px rgba(229, 9, 20, 0.8)"
+            margin: 0,
+            padding: 0,
+            textTransform: "uppercase",
+            animation: "crispNetflixZoom 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+            textShadow: "0 0 30px rgba(229, 9, 20, 0.6), 0 0 80px rgba(229, 9, 20, 0.3)",
+            backfaceVisibility: "hidden",
+            WebkitFontSmoothing: "antialiased"
           }}>
             VIGNESH
           </h1>
-          <p style={{
-            marginTop: "16px",
+          <div style={{
+            marginTop: "20px",
             color: "#888",
-            letterSpacing: "4px",
+            letterSpacing: "6px",
             fontSize: "13px",
-            textTransform: "uppercase"
+            fontWeight: 700,
+            textTransform: "uppercase",
+            opacity: 0.9
           }}>
-            Original Portfolio Experience
-          </p>
+            ORIGINAL
+          </div>
         </div>
       )}
 
-      {/* PROFILE GATE */}
+      {/* PROFILE GATE SCREEN */}
       {!hasEntered && !isIntroAnimating && (
         <div style={{
           minHeight: "100vh",
@@ -288,7 +329,6 @@ export default function App() {
       {/* MAIN PORTFOLIO */}
       {hasEntered && (
         <div style={{ minHeight: "100vh", overflowX: "hidden" }}>
-          {/* Header */}
           <header style={{
             position: "fixed",
             top: 0,
@@ -376,7 +416,7 @@ export default function App() {
             </div>
           </header>
 
-          {/* 1. HERO BILLBOARD WITH YOUR PHOTO */}
+          {/* 1. HERO BILLBOARD WITH PHOTO */}
           <section
             id="hero"
             style={{
@@ -507,7 +547,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Your photo from public/my-photo.jpg */}
+              {/* my-photo.jpg */}
               <div
                 className="hero-photo-wrapper"
                 style={{
