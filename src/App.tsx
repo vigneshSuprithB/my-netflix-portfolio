@@ -77,17 +77,18 @@ export default function App() {
     }}>
       {/* Sticky Top Navbar */}
       <nav style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        backgroundColor: 'rgba(20, 20, 20, 0.95)',
-        backdropFilter: 'blur(8px)',
-        padding: '1.2rem 3rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderBottom: '1px solid #222'
-      }}>
+  position: 'sticky',
+  top: 0,
+  zIndex: 50,
+  backgroundColor: 'rgba(15, 15, 15, 0.65)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+  padding: '1.2rem 3rem',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
