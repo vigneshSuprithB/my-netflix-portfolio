@@ -6,40 +6,24 @@ export default function App() {
   const [entered, setEntered] = useState(false);
   const [muted, setMuted] = useState(false);
 
-  // Synthesized Netflix "Ta-Dum" audio via native Web Audio API
+  // Authentic Netflix Ta-Dum sound
   const playNetflixSound = () => {
     if (muted) return;
     try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const ctx = new AudioCtx();
-
-      // Deep cinematic sub-bass hit
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sawtooth';
-      osc1.frequency.setValueAtTime(65, ctx.currentTime);
-      osc1.frequency.exponentialRampToValueAtTime(32, ctx.currentTime + 1.2);
-      gain1.gain.setValueAtTime(0.5, ctx.currentTime);
-      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start();
-      osc1.stop(ctx.currentTime + 1.2);
-
-      // Distinct cinematic punch chord
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(130, ctx.currentTime + 0.08);
-      osc2.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 1.4);
-      gain2.gain.setValueAtTime(0.4, ctx.currentTime + 0.08);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.4);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(ctx.currentTime + 0.08);
-      osc2.stop(ctx.currentTime + 1.4);
+      const audio = new Audio('https://raw.githubusercontent.com/vigneshSuprithB/assets/main/netflix.mp3');
+      audio.volume = 0.7;
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback to direct secondary reliable mirror if network blocks
+          const fallbackAudio = new Audio('https://assets.ctfassets.net/4cd45etpfsq4/4MeAqh89qmgcqmEk8eG24m/50453531b2ecda7cf0743f05560a6fc3/netflix-sound.mp3');
+          fallbackAudio.volume = 0.7;
+          fallbackAudio.play().catch(() => {});
+        });
+      }
     } catch {
-      // Graceful fallback if browser audio is blocked
+      // Graceful fallback
     }
   };
 
@@ -141,7 +125,7 @@ export default function App() {
         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
           <button
             onClick={() => setMuted(!muted)}
-            title={muted ? "Unmute audio" : "Mute audio"}
+            title={muted ? 'Unmute audio' : 'Mute audio'}
             style={{
               background: 'transparent',
               border: 'none',
