@@ -1,0 +1,33 @@
+export const myPortfolio = {
+  name: "Vignesh Suprith",
+  title: "MSc Computing & Technology",
+  subtitle: "FULL-STACK DEVELOPER • CLOUD • SOFTWARE ENGINEERING",
+  bio: "MSc Computing & Technologies student passionate about building scalable web applications, modern software systems, and intelligent tools.",
+  heroImage: "/my-photo.jpg",
+  resumeUrl: "/resume.pdf",
+  socials: {
+    github: "https://github.com/vigneshSuprithB",
+    linkedin: "https://linkedin.com",
+    email: "mailto:your-email@example.com",
+  },
+  skills: [
+    "TypeScript", "JavaScript", "Python", "React", "Node.js", 
+    "Docker", "SQL", "Git", "REST APIs"
+  ],
+  projects: [
+    {
+      title: "Episode 1: EduGenie AI",
+      tagline: "Artificial Intelligence Platform",
+      description: "An intelligent platform designed to streamline student workflows and learning tasks.",
+      tech: ["Python", "AI/ML", "React"],
+      link: "https://github.com/vigneshSuprithB/EDUGENIE_AI"
+    },
+    {
+      title: "Episode 2: Full-Stack Web Platform",
+      tagline: "Modern Web Application",
+      description: "A responsive, scalable cloud application built with a modern frontend and backend architecture.",
+      tech: ["TypeScript", "Node.js", "SQL"],
+      link: "https://github.com/vigneshSuprithB"
+    }
+  ]
+};
