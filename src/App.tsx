@@ -10,9 +10,7 @@ export default function App() {
     try {
       const audio = new Audio('/netflix.mp3');
       audio.volume = 0.7;
-      audio.play().catch(() => {
-        // Fallback if browser blocks sound
-      });
+      audio.play().catch(() => {});
     } catch {
       // Ignore audio errors
     }
@@ -49,9 +47,9 @@ export default function App() {
                 alignItems: 'center',
                 cursor: 'pointer',
                 gap: '0.8rem',
-                transition: 'transform 0.2s ease'
+                transition: 'transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.06)')}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1.0)')}
             >
               <div style={{
@@ -81,9 +79,9 @@ export default function App() {
     );
   }
 
-  // Main Dark Glass Netflix Portfolio
+  // Main Dark Glass Netflix Portfolio with Entry Animations
   return (
-    <div style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '5rem' }}>
+    <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '5rem' }}>
       {/* Frosted Glass Navbar */}
       <nav style={{
         position: 'sticky',
@@ -128,8 +126,11 @@ export default function App() {
               borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '0.8rem',
-              fontWeight: 500
+              fontWeight: 500,
+              transition: 'background-color 0.2s ease'
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.18)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
           >
             Switch Profile
           </button>
@@ -187,7 +188,16 @@ export default function App() {
                 borderRadius: '6px',
                 fontWeight: 700,
                 textDecoration: 'none',
-                boxShadow: '0 4px 14px rgba(255, 255, 255, 0.15)'
+                boxShadow: '0 4px 14px rgba(255, 255, 255, 0.15)',
+                transition: 'transform 0.2s ease, background-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.04)';
+                e.currentTarget.style.backgroundColor = '#e6e6e6';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1.0)';
+                e.currentTarget.style.backgroundColor = '#ffffff';
               }}
             >
               <Play size={18} fill="#000" /> View Episodes
@@ -208,7 +218,16 @@ export default function App() {
                 padding: '0.8rem 1.8rem',
                 borderRadius: '6px',
                 fontWeight: 700,
-                textDecoration: 'none'
+                textDecoration: 'none',
+                transition: 'transform 0.2s ease, background-color 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.04)';
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.18)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1.0)';
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
               }}
             >
               <FileText size={18} /> View CV
@@ -237,7 +256,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Projects / Episodes */}
+      {/* Featured Projects / Episodes (Animated Glass Cards) */}
       <section id="projects" style={{ maxWidth: '1150px', margin: '3rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Season 1: Featured Projects
@@ -246,6 +265,7 @@ export default function App() {
           {myPortfolio.projects.map((proj, idx) => (
             <div
               key={idx}
+              className="netflix-card"
               style={{
                 backgroundColor: 'rgba(24, 24, 27, 0.55)',
                 backdropFilter: 'blur(14px)',
@@ -314,17 +334,20 @@ export default function App() {
           Behind the Scenes: Background
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {/* Education */}
-          <div style={{
-            backgroundColor: 'rgba(24, 24, 27, 0.45)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            padding: '1.8rem',
-            borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
-            textAlign: 'left'
-          }}>
+          {/* Education Card */}
+          <div
+            className="netflix-card"
+            style={{
+              backgroundColor: 'rgba(24, 24, 27, 0.45)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              padding: '1.8rem',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+              textAlign: 'left'
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
               <GraduationCap size={22} />
               <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Education</h3>
@@ -341,17 +364,20 @@ export default function App() {
             ))}
           </div>
 
-          {/* Experience */}
-          <div style={{
-            backgroundColor: 'rgba(24, 24, 27, 0.45)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            padding: '1.8rem',
-            borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
-            textAlign: 'left'
-          }}>
+          {/* Experience Card */}
+          <div
+            className="netflix-card"
+            style={{
+              backgroundColor: 'rgba(24, 24, 27, 0.45)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              padding: '1.8rem',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+              textAlign: 'left'
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
               <Briefcase size={22} />
               <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Experience</h3>
@@ -370,7 +396,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Glass Tech Skills */}
+      {/* Tech Skills */}
       <section id="skills" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Tech Universe
@@ -379,6 +405,7 @@ export default function App() {
           {myPortfolio.skills.map((skill, idx) => (
             <span
               key={idx}
+              className="skill-pill"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(8px)',
@@ -389,7 +416,8 @@ export default function App() {
                 fontSize: '0.9rem',
                 color: '#e5e5e5',
                 fontWeight: 500,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                cursor: 'default'
               }}
             >
               {skill}
