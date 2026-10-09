@@ -1,660 +1,781 @@
-import { useState, useRef } from 'react';
-import { myPortfolio } from './data';
-import { 
-  Play, 
-  FileText, 
-  ExternalLink, 
-  GraduationCap, 
-  Briefcase, 
-  Award, 
-  Trophy, 
-  User, 
-  Mail, 
-  MapPin, 
-  Flame 
-} from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Play,
+  Info,
+  ChevronRight,
+  Mail,
+  Volume2,
+  VolumeX,
+  Code2,
+  Terminal,
+  Layout,
+  Database,
+  Layers,
+  Zap,
+  Palette,
+  Smartphone,
+  Server,
+  Network,
+  Lock,
+  GitBranch,
+  Cloud,
+  TerminalSquare,
+  HardDrive,
+  Award,
+  ShieldCheck,
+  BookOpen,
+  Cpu,
+  PlaySquare,
+  Send
+} from "lucide-react";
+import { portfolioData } from "./data";
+
+const iconMap: Record<string, React.ReactNode> = {
+  Code2: <Code2 size={20} />,
+  Terminal: <Terminal size={20} />,
+  Layout: <Layout size={20} />,
+  Database: <Database size={20} />,
+  Layers: <Layers size={20} />,
+  Zap: <Zap size={20} />,
+  Palette: <Palette size={20} />,
+  Smartphone: <Smartphone size={20} />,
+  Server: <Server size={20} />,
+  Network: <Network size={20} />,
+  Lock: <Lock size={20} />,
+  GitBranch: <GitBranch size={20} />,
+  Cloud: <Cloud size={20} />,
+  TerminalSquare: <TerminalSquare size={20} />,
+  HardDrive: <HardDrive size={20} />,
+  Award: <Award size={20} />,
+  ShieldCheck: <ShieldCheck size={20} />,
+  BookOpen: <BookOpen size={20} />,
+  Cpu: <Cpu size={20} />,
+  PlaySquare: <PlaySquare size={20} />,
+  Send: <Send size={20} />
+};
 
 export default function App() {
-  const [profileSelected, setProfileSelected] = useState(false);
-  const [showIntroVideo, setShowIntroVideo] = useState(false);
-  const [entered, setEntered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [hasEntered, setHasEntered] = useState<boolean>(false);
+  const [selectedProfile, setSelectedProfile] = useState<string>("Recruiter");
+  const [activeSkillTab, setActiveSkillTab] = useState<string>("languages");
+  const [isMuted, setIsMuted] = useState<boolean>(true);
 
-  const handleProfileSelect = () => {
-    setProfileSelected(true);
-    setShowIntroVideo(true);
-
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.currentTime = 0;
-        videoRef.current.play().catch(() => {
-          handleIntroEnd();
-        });
-      }
-    }, 50);
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleIntroEnd = () => {
-    setShowIntroVideo(false);
-    setEntered(true);
-  };
-
-  // 1. Netflix Profile Gate ("Who's watching?")
-  if (!profileSelected) {
+  if (!hasEntered) {
     return (
       <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#ffffff',
-        padding: '20px'
+        minHeight: "100vh",
+        background: "radial-gradient(circle at center, #1b0204 0%, #080808 80%)",
+        color: "#ffffff",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "'Helvetica Neue', Arial, sans-serif",
+        padding: "24px"
       }}>
-        <h1 style={{ fontSize: '2.1rem', fontWeight: 600, marginBottom: '2rem', letterSpacing: '0.5px' }}>
+        <h1 style={{
+          fontSize: "clamp(2rem, 5vw, 3.2rem)",
+          fontWeight: 700,
+          letterSpacing: "-0.5px",
+          marginBottom: "48px"
+        }}>
           Who's watching?
         </h1>
-        <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+
+        <div style={{
+          display: "flex",
+          gap: "28px",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          maxWidth: "700px"
+        }}>
           {[
-            { label: 'Recruiter', color: 'rgba(229, 9, 20, 0.85)' },
-            { label: 'Developer', color: 'rgba(0, 113, 235, 0.85)' },
-            { label: 'Guest', color: 'rgba(43, 184, 114, 0.85)' },
-          ].map((profile, i) => (
+            { name: "Recruiter", color: "#E50914", bg: "#B81D24" },
+            { name: "Tech Lead", color: "#1E88E5", bg: "#1565C0" },
+            { name: "Developer", color: "#43A047", bg: "#2E7D32" },
+            { name: "Guest", color: "#FB8C00", bg: "#E65100" }
+          ].map((profile) => (
             <div
-              key={i}
-              onClick={handleProfileSelect}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                cursor: 'pointer',
-                gap: '0.6rem',
-                transition: 'transform 0.25s ease'
+              key={profile.name}
+              onClick={() => {
+                setSelectedProfile(profile.name);
+                setHasEntered(true);
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.06)')}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1.0)')}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "12px",
+                cursor: "pointer"
+              }}
             >
-              <div style={{
-                width: '100px',
-                height: '100px',
-                backgroundColor: profile.color,
-                backdropFilter: 'blur(10px)',
-                borderRadius: '10px',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '2.2rem',
-                fontWeight: 'bold',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
-              }}>
-                {profile.label[0]}
+              <div
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  borderRadius: "8px",
+                  background: `linear-gradient(135deg, ${profile.color}, ${profile.bg})`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "42px",
+                  fontWeight: 800,
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+                  transition: "transform 0.2s ease, border 0.2s ease",
+                  border: "3px solid transparent"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.06)";
+                  e.currentTarget.style.border = "3px solid #ffffff";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.border = "3px solid transparent";
+                }}
+              >
+                {profile.name[0]}
               </div>
-              <span style={{ color: '#999', fontSize: '0.9rem', fontWeight: 500 }}>
-                {profile.label}
-              </span>
+              <span style={{ color: "#aaa", fontSize: "16px" }}>{profile.name}</span>
             </div>
           ))}
         </div>
-      </div>
-    );
-  }
 
-  // 2. Fullscreen Video Intro Screen
-  if (showIntroVideo && !entered) {
-    return (
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: '#000000',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <video
-          ref={videoRef}
-          src="https://raw.githubusercontent.com/vigneshSuprithB/assets/main/netflix-intro.mp4"
-          onEnded={handleIntroEnd}
-          playsInline
-          style={{ width: '100vw', height: '100vh', objectFit: 'contain' }}
-        />
         <button
-          onClick={handleIntroEnd}
+          onClick={() => setHasEntered(true)}
           style={{
-            position: 'absolute',
-            bottom: '30px',
-            right: '25px',
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            color: '#ffffff',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            padding: '8px 18px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '0.85rem',
+            marginTop: "60px",
+            background: "transparent",
+            color: "#888",
+            border: "1px solid #555",
+            padding: "10px 28px",
+            fontSize: "14px",
             fontWeight: 600,
-            backdropFilter: 'blur(6px)'
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            borderRadius: "4px"
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#ffffff")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
         >
-          Skip Intro
+          Manage Profiles
         </button>
       </div>
     );
   }
 
-  // 3. Main Netflix Portfolio App
+  const currentCategory =
+    portfolioData.skillCategories.find((c) => c.id === activeSkillTab) ||
+    portfolioData.skillCategories[0];
+
   return (
-    <div className="animate-entrance" style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '6rem' }}>
-      {/* Responsive Netflix Frosted Glass Navbar */}
-      <nav className="nav-container">
-        {/* Left Side: Brand Logo + Section Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', flexShrink: 0 }}>
-          <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
-            VIGNESH
+    <div style={{
+      minHeight: "100vh",
+      backgroundColor: "#111111",
+      color: "#ffffff",
+      fontFamily: "'Helvetica Neue', Arial, sans-serif",
+      overflowX: "hidden"
+    }}>
+      {/* Top Floating Navigation Bar */}
+      <header style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "68px",
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 clamp(16px, 4vw, 48px)",
+        background: "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)",
+        backdropFilter: "blur(12px)"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+          <span style={{
+            color: "#E50914",
+            fontSize: "26px",
+            fontWeight: 900,
+            letterSpacing: "2px",
+            cursor: "pointer"
+          }} onClick={() => scrollTo("hero")}>
+            NETFLIX
           </span>
-          <div className="nav-categories">
-            <a href="#about" className="nav-chip">Home</a>
-            <a href="#about-me" className="nav-chip">Overview</a>
-            <a href="#projects" className="nav-chip">Episodes</a>
-            <a href="#top-tech" className="nav-chip">Top 10</a>
-            <a href="#background" className="nav-chip">History</a>
-            <a href="#honors" className="nav-chip">Honors</a>
-            <a href="#skills" className="nav-chip">Skills</a>
-          </div>
+          <nav style={{ display: "flex", gap: "20px", fontSize: "14px", color: "#e5e5e5" }}>
+            <span style={{ cursor: "pointer" }} onClick={() => scrollTo("hero")}>Home</span>
+            <span style={{ cursor: "pointer" }} onClick={() => scrollTo("story")}>The Story</span>
+            <span style={{ cursor: "pointer" }} onClick={() => scrollTo("skills")}>Skills</span>
+            <span style={{ cursor: "pointer" }} onClick={() => scrollTo("projects")}>Projects</span>
+            <span style={{ cursor: "pointer" }} onClick={() => scrollTo("contact")}>Contact</span>
+          </nav>
         </div>
 
-        {/* Right Side: GitHub, LinkedIn, Switch (Fixed on the far right) */}
-        <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexShrink: 0 }}>
-          <a 
-            href={myPortfolio.socials.github} 
-            target="_blank" 
-            rel="noreferrer" 
-            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap' }}
-          >
-            GitHub
-          </a>
-          <a 
-            href={myPortfolio.socials.linkedin} 
-            target="_blank" 
-            rel="noreferrer" 
-            style={{ color: '#ccc', textDecoration: 'none', fontWeight: 600, fontSize: '0.85rem', whiteSpace: 'nowrap' }}
-          >
-            LinkedIn
-          </a>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button
-            onClick={() => {
-              setProfileSelected(false);
-              setEntered(false);
-            }}
+            onClick={() => setIsMuted(!isMuted)}
             style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#fff',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              backdropFilter: 'blur(8px)',
-              padding: '6px 14px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              whiteSpace: 'nowrap'
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: "#fff",
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer"
             }}
           >
-            Switch
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </button>
+          <div
+            onClick={() => setHasEntered(false)}
+            title="Switch profile"
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "4px",
+              background: "#E50914",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              cursor: "pointer",
+              fontSize: "14px"
+            }}
+          >
+            {selectedProfile[0]}
+          </div>
         </div>
-      </nav>
+      </header>
 
-      {/* Hero Section */}
-      <section id="about" className="hero-container" style={{ maxWidth: '1150px', margin: '0 auto' }}>
-        <div className="hero-text-container">
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-            <span style={{
-              backgroundColor: 'rgba(229, 9, 20, 0.2)',
-              color: '#E50914',
-              padding: '3px 8px',
-              borderRadius: '4px',
-              fontSize: '0.7rem',
-              fontWeight: 800,
-              letterSpacing: '1px',
-              border: '1px solid rgba(229, 9, 20, 0.3)'
-            }}>
-              NETFLIX ORIGINAL
-            </span>
-            <span style={{ color: '#888', fontSize: '0.75rem', fontWeight: 600 }}>
-              {myPortfolio.subtitle}
-            </span>
+      {/* 1. HERO BILLBOARD */}
+      <section
+        id="hero"
+        style={{
+          position: "relative",
+          minHeight: "88vh",
+          display: "flex",
+          alignItems: "center",
+          padding: "100px clamp(16px, 5vw, 64px) 40px",
+          background: "linear-gradient(to right, #000 30%, rgba(0,0,0,0.6) 70%, transparent 100%), radial-gradient(circle at 85% 35%, #2a0306 0%, #111111 75%)"
+        }}
+      >
+        <div style={{ maxWidth: "680px", zIndex: 10 }}>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            color: "#E50914",
+            fontWeight: 800,
+            fontSize: "13px",
+            letterSpacing: "4px",
+            marginBottom: "12px"
+          }}>
+            <span>{portfolioData.hero.badge}</span>
           </div>
 
-          <h1 className="hero-title">
-            {myPortfolio.name}
+          <h1 style={{
+            fontSize: "clamp(3rem, 7vw, 5.5rem)",
+            fontWeight: 900,
+            letterSpacing: "-1.5px",
+            margin: "0 0 16px 0",
+            textTransform: "uppercase",
+            textShadow: "0 4px 20px rgba(0,0,0,0.8)"
+          }}>
+            {portfolioData.hero.title}
           </h1>
 
-          <p style={{ color: '#cccccc', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '580px', margin: '0 0 1.75rem' }}>
-            {myPortfolio.bio}
-          </p>
-
-          <div className="hero-actions">
-            <a
-              href="#projects"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: '#ffffff',
-                color: '#000000',
-                padding: '0.75rem 1.6rem',
-                borderRadius: '6px',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-            >
-              <Play size={16} fill="#000" /> Episodes
-            </a>
-            <a
-              href={myPortfolio.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#ffffff',
-                padding: '0.75rem 1.6rem',
-                borderRadius: '6px',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-            >
-              <FileText size={16} /> CV
-            </a>
-          </div>
-        </div>
-
-        {/* Responsive Photo Card */}
-        <div
-          className="hero-image-card"
-          style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            backdropFilter: 'blur(12px)',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            boxShadow: '0 16px 36px rgba(0, 0, 0, 0.6)',
-            flexShrink: 0
-          }}
-        >
-          <img
-            src={myPortfolio.heroImage}
-            alt={myPortfolio.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-        </div>
-      </section>
-
-      {/* About Me / Overview */}
-      <section id="about-me" className="section-wrapper" style={{ maxWidth: '1150px', margin: '0 auto' }}>
-        <div
-          className="netflix-card"
-          style={{
-            backgroundColor: 'rgba(24, 24, 27, 0.5)',
-            backdropFilter: 'blur(14px)',
-            borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '1.75rem 2rem',
-            textAlign: 'left'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '0.5rem' }}>
-            <User size={18} />
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase' }}>
-              Series Overview & Storyline
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            fontSize: "14px",
+            fontWeight: 600,
+            marginBottom: "20px"
+          }}>
+            <span style={{ color: "#46d369" }}>{portfolioData.hero.matchScore}</span>
+            <span style={{ color: "#999" }}>{portfolioData.hero.year}</span>
+            <span style={{
+              border: "1px solid rgba(255,255,255,0.4)",
+              padding: "1px 6px",
+              borderRadius: "2px",
+              fontSize: "12px"
+            }}>
+              {portfolioData.hero.rating}
+            </span>
+            <span style={{ color: "#999" }}>{portfolioData.hero.seasons}</span>
+            <span style={{
+              border: "1px solid rgba(255,255,255,0.4)",
+              padding: "1px 5px",
+              borderRadius: "2px",
+              fontSize: "11px"
+            }}>
+              {portfolioData.hero.quality}
             </span>
           </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.75rem' }}>Behind the Developer</h2>
-          <p style={{ color: '#bbb', fontSize: '1rem', lineHeight: '1.6', marginBottom: '1.25rem' }}>
-            {myPortfolio.aboutExtended}
+
+          <p style={{
+            fontSize: "17px",
+            lineHeight: 1.6,
+            color: "#d2d2d2",
+            marginBottom: "32px",
+            maxWidth: "580px"
+          }}>
+            {portfolioData.hero.synopsis}
           </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem' }}>
-            <MapPin size={15} color="#E50914" />
-            <span>Based in {myPortfolio.location} • Actively Open to Opportunities</span>
+
+          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+            <button
+              onClick={() => scrollTo("projects")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                backgroundColor: "#ffffff",
+                color: "#000000",
+                border: "none",
+                borderRadius: "6px",
+                padding: "12px 28px",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+                transition: "background 0.2s"
+              }}
+            >
+              <Play fill="#000" size={18} /> Play Episodes
+            </button>
+
+            <button
+              onClick={() => scrollTo("story")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                backgroundColor: "rgba(109, 109, 110, 0.7)",
+                color: "#ffffff",
+                border: "none",
+                borderRadius: "6px",
+                padding: "12px 28px",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: "pointer",
+                backdropFilter: "blur(6px)"
+              }}
+            >
+              <Info size={18} /> More Info
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Projects / Episodes */}
-      <section id="projects" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          Season 1: Featured Projects
+      {/* 2. CONTINUE EXPLORING */}
+      <section style={{ padding: "10px clamp(16px, 5vw, 64px) 40px" }}>
+        <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", color: "#e5e5e5" }}>
+          Continue Exploring
         </h2>
-        <div className="two-col-grid">
-          {myPortfolio.projects.map((proj, idx) => (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "16px"
+        }}>
+          {portfolioData.exploreCards.map((card) => (
             <div
-              key={idx}
-              className="netflix-card"
+              key={card.id}
+              onClick={() => scrollTo(card.id)}
               style={{
-                backgroundColor: 'rgba(24, 24, 27, 0.55)',
-                backdropFilter: 'blur(14px)',
-                padding: '1.75rem',
-                borderRadius: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                textAlign: 'left'
+                background: "rgba(35, 35, 35, 0.7)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "8px",
+                padding: "20px",
+                cursor: "pointer",
+                transition: "transform 0.2s, border 0.2s, background 0.2s",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.borderColor = "#E50914";
+                e.currentTarget.style.background = "rgba(50, 50, 50, 0.9)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
+                e.currentTarget.style.background = "rgba(35, 35, 35, 0.7)";
               }}
             >
               <div>
-                <span style={{ color: '#E50914', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>
-                  {proj.tagline}
-                </span>
-                <h3 style={{ fontSize: '1.3rem', margin: '0.4rem 0' }}>{proj.title}</h3>
-                <p style={{ color: '#999', fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '1.2rem' }}>
-                  {proj.description}
+                <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>{card.label}</div>
+                <div style={{ fontSize: "13px", color: "#888", marginTop: "4px" }}>{card.subtitle}</div>
+              </div>
+              <ChevronRight size={20} color="#E50914" />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. THE FULL STORY */}
+      <section id="story" style={{ padding: "40px clamp(16px, 5vw, 64px)" }}>
+        <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "20px", color: "#e5e5e5" }}>
+          The Full Story
+        </h2>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+          <div style={{
+            background: "rgba(25, 25, 25, 0.6)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "12px",
+            padding: "24px"
+          }}>
+            <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#E50914", marginBottom: "16px" }}>
+              Education Timeline
+            </h3>
+            {portfolioData.story.education.map((item, idx) => (
+              <div key={idx} style={{ marginBottom: "20px", borderLeft: "2px solid #E50914", paddingLeft: "16px" }}>
+                <div style={{ fontSize: "16px", fontWeight: 700 }}>{item.degree}</div>
+                <div style={{ fontSize: "13px", color: "#aaa", marginTop: "2px" }}>{item.institution} • {item.period}</div>
+                <div style={{ fontSize: "14px", color: "#ccc", marginTop: "8px", lineHeight: 1.5 }}>{item.details}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{
+            background: "rgba(25, 25, 25, 0.6)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "12px",
+            padding: "24px"
+          }}>
+            <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#E50914", marginBottom: "16px" }}>
+              Focus Areas & Certifications
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {portfolioData.story.achievements.map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    background: "rgba(40,40,40,0.5)",
+                    padding: "14px 18px",
+                    borderRadius: "8px"
+                  }}
+                >
+                  <div style={{ color: "#E50914" }}>
+                    {iconMap[item.icon] || <Award size={20} />}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "15px", fontWeight: 700 }}>{item.title}</div>
+                    <div style={{ fontSize: "13px", color: "#888" }}>{item.org} • {item.year}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. MY SKILL UNIVERSE */}
+      <section id="skills" style={{ padding: "40px clamp(16px, 5vw, 64px)" }}>
+        <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "20px", color: "#e5e5e5" }}>
+          My Skill Universe
+        </h2>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr)) 3fr",
+          gap: "24px",
+          background: "rgba(20, 20, 20, 0.7)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: "12px",
+          padding: "24px"
+        }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {portfolioData.skillCategories.map((cat) => {
+              const active = cat.id === activeSkillTab;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveSkillTab(cat.id)}
+                  style={{
+                    textAlign: "left",
+                    padding: "14px 18px",
+                    borderRadius: "8px",
+                    border: "none",
+                    background: active ? "#E50914" : "rgba(35, 35, 35, 0.6)",
+                    color: active ? "#ffffff" : "#aaa",
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    letterSpacing: "1px",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
+          </div>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "16px"
+          }}>
+            {currentCategory.skills.map((skill, idx) => (
+              <div
+                key={idx}
+                style={{
+                  background: "rgba(30, 30, 30, 0.8)",
+                  border: "1px solid rgba(255, 255, 255, 0.05)",
+                  borderRadius: "8px",
+                  padding: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px"
+                }}
+              >
+                <div style={{ color: "#E50914" }}>
+                  {iconMap[skill.icon] || <Zap size={20} />}
+                </div>
+                <div>
+                  <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{skill.name}</div>
+                  <div style={{ fontSize: "12px", color: "#888", marginTop: "2px" }}>{skill.level}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. FEATURED EPISODES / PROJECTS */}
+      <section id="projects" style={{ padding: "40px clamp(16px, 5vw, 64px)" }}>
+        <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "20px", color: "#e5e5e5" }}>
+          Season 1: Featured Episodes
+        </h2>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "24px"
+        }}>
+          {portfolioData.projects.map((project) => (
+            <div
+              key={project.id}
+              style={{
+                background: "rgba(25, 25, 25, 0.8)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "10px",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              <div style={{
+                height: "160px",
+                background: "linear-gradient(135deg, #1f0103 0%, #300c0f 50%, #111 100%)",
+                padding: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{
+                    background: "#E50914",
+                    color: "#fff",
+                    fontSize: "11px",
+                    fontWeight: 800,
+                    padding: "3px 8px",
+                    borderRadius: "3px"
+                  }}>
+                    {project.badge || "ORIGINAL"}
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#aaa" }}>{project.season}</span>
+                </div>
+                <h3 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>{project.title}</h3>
+              </div>
+
+              <div style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", gap: "10px", fontSize: "12px", marginBottom: "12px" }}>
+                  <span style={{ color: "#46d369", fontWeight: 700 }}>{project.match}</span>
+                  <span style={{ color: "#888" }}>{project.duration}</span>
+                </div>
+
+                <p style={{ fontSize: "14px", color: "#bbb", lineHeight: 1.5, flex: 1, marginBottom: "16px" }}>
+                  {project.description}
                 </p>
-                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-                  {proj.tech.map((t, i) => (
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+                  {project.tags.map((tag, i) => (
                     <span
                       key={i}
                       style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        color: '#ccc',
-                        fontSize: '0.75rem',
-                        padding: '4px 10px',
-                        borderRadius: '4px',
-                        fontWeight: 500
+                        background: "rgba(255,255,255,0.06)",
+                        fontSize: "12px",
+                        padding: "3px 8px",
+                        borderRadius: "4px",
+                        color: "#ccc"
                       }}
                     >
-                      {t}
+                      {tag}
                     </span>
                   ))}
                 </div>
+
+                <div style={{ display: "flex", gap: "12px" }}>
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      background: "rgba(255,255,255,0.1)",
+                      color: "#fff",
+                      textDecoration: "none",
+                      padding: "10px",
+                      borderRadius: "6px",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px"
+                    }}
+                  >
+                    <Code2 size={16} /> Code
+                  </a>
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        flex: 1,
+                        textAlign: "center",
+                        background: "#E50914",
+                        color: "#fff",
+                        textDecoration: "none",
+                        padding: "10px",
+                        borderRadius: "6px",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "6px"
+                      }}
+                    >
+                      <Play size={14} fill="#fff" /> Live
+                    </a>
+                  )}
+                </div>
               </div>
-              <a
-                href={proj.link}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  color: '#ffffff',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                Inspect Code <ExternalLink size={13} color="#E50914" />
-              </a>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Top 10 Stack */}
-      <section id="top-tech" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          <Flame size={22} color="#E50914" />
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
-            Top 10 Today in Tech Stack
-          </h2>
+      {/* 6. TO BE CONTINUED... OUTRO */}
+      <section
+        id="contact"
+        style={{
+          padding: "80px clamp(16px, 5vw, 64px) 100px",
+          textAlign: "center",
+          background: "linear-gradient(180deg, #111111 0%, #1a0204 100%)",
+          borderTop: "1px solid rgba(255,255,255,0.05)"
+        }}
+      >
+        <div style={{
+          color: "#E50914",
+          fontWeight: 800,
+          letterSpacing: "4px",
+          fontSize: "14px",
+          marginBottom: "12px"
+        }}>
+          SEASON FINALE
         </div>
-        <div className="top-tech-grid">
-          {myPortfolio.topTech.map((item, idx) => (
-            <div
-              key={idx}
-              className="netflix-card"
-              style={{
-                backgroundColor: 'rgba(24, 24, 27, 0.45)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                padding: '0.85rem 1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.85rem'
-              }}
-            >
-              <span style={{
-                fontSize: '2rem',
-                fontWeight: 900,
-                color: '#E50914',
-                lineHeight: 1,
-                letterSpacing: '-1px'
-              }}>
-                {idx + 1}
-              </span>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#e5e5e5' }}>
-                {item}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Background (Education & Experience) */}
-      <section id="background" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          Behind the Scenes: Background
+        <h2 style={{
+          fontSize: "clamp(2.4rem, 5vw, 4rem)",
+          fontWeight: 900,
+          letterSpacing: "-1px",
+          marginBottom: "16px"
+        }}>
+          TO BE CONTINUED...
         </h2>
-        <div className="two-col-grid">
-          {/* Education */}
-          <div
-            className="netflix-card"
-            style={{
-              backgroundColor: 'rgba(24, 24, 27, 0.45)',
-              backdropFilter: 'blur(12px)',
-              padding: '1.75rem',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <GraduationCap size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Education</h3>
-            </div>
-            {myPortfolio.education?.map((edu, idx) => (
-              <div key={idx} style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{edu.degree}</h4>
-                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{edu.period}</span>
-                </div>
-                <p style={{ color: '#aaa', fontSize: '0.82rem', margin: '3px 0 5px' }}>{edu.institution}</p>
-                <p style={{ color: '#777', fontSize: '0.8rem', lineHeight: '1.4' }}>{edu.details}</p>
-              </div>
-            ))}
-          </div>
 
-          {/* Experience */}
-          <div
-            className="netflix-card"
-            style={{
-              backgroundColor: 'rgba(24, 24, 27, 0.45)',
-              backdropFilter: 'blur(12px)',
-              padding: '1.75rem',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <Briefcase size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Experience</h3>
-            </div>
-            {myPortfolio.experience?.map((exp, idx) => (
-              <div key={idx} style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{exp.role}</h4>
-                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{exp.period}</span>
-                </div>
-                <p style={{ color: '#aaa', fontSize: '0.82rem', margin: '3px 0 5px' }}>{exp.company}</p>
-                <p style={{ color: '#777', fontSize: '0.8rem', lineHeight: '1.4' }}>{exp.details}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <p style={{
+          color: "#aaa",
+          maxWidth: "520px",
+          margin: "0 auto 36px",
+          fontSize: "16px",
+          lineHeight: 1.6
+        }}>
+          Looking to collaborate on exciting web applications or explore graduate opportunities?
+        </p>
 
-      {/* Awards & Certifications */}
-      <section id="honors" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          Awards & Certifications
-        </h2>
-        <div className="two-col-grid">
-          {/* Achievements */}
-          <div
-            className="netflix-card"
-            style={{
-              backgroundColor: 'rgba(24, 24, 27, 0.45)',
-              backdropFilter: 'blur(12px)',
-              padding: '1.75rem',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <Trophy size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Key Milestones</h3>
-            </div>
-            {myPortfolio.achievements?.map((ach, idx) => (
-              <div key={idx} style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{ach.title}</h4>
-                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{ach.period}</span>
-                </div>
-                <p style={{ color: '#E50914', fontSize: '0.78rem', fontWeight: 600, margin: '2px 0 4px' }}>{ach.subtitle}</p>
-                <p style={{ color: '#777', fontSize: '0.8rem', lineHeight: '1.4' }}>{ach.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Certifications */}
-          <div
-            className="netflix-card"
-            style={{
-              backgroundColor: 'rgba(24, 24, 27, 0.45)',
-              backdropFilter: 'blur(12px)',
-              padding: '1.75rem',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <Award size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Certifications</h3>
-            </div>
-            {myPortfolio.certifications?.map((cert, idx) => (
-              <div key={idx} style={{ marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>{cert.name}</h4>
-                  <span style={{ fontSize: '0.75rem', color: '#888' }}>{cert.year}</span>
-                </div>
-                <p style={{ color: '#aaa', fontSize: '0.8rem', margin: '2px 0 2px' }}>{cert.issuer}</p>
-                <span style={{ color: '#666', fontSize: '0.72rem', fontFamily: 'monospace' }}>ID: {cert.id}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Additional Skills Cloud */}
-      <section id="skills" className="section-wrapper" style={{ maxWidth: '1150px', margin: '4rem auto 0' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '0.75rem', marginBottom: '1.25rem', textAlign: 'left' }}>
-          Additional Tech Universe
-        </h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-          {myPortfolio.skills.map((skill, idx) => (
-            <span
-              key={idx}
-              className="skill-pill"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                padding: '0.5rem 1rem',
-                borderRadius: '16px',
-                fontSize: '0.85rem',
-                color: '#e5e5e5',
-                fontWeight: 500,
-                cursor: 'default'
-              }}
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="section-wrapper" style={{ maxWidth: '1150px', margin: '5rem auto 0' }}>
-        <div
-          className="netflix-card"
+        <a
+          href="mailto:vigneshsuprithb@gmail.com"
           style={{
-            backgroundColor: 'rgba(24, 24, 27, 0.6)',
-            backdropFilter: 'blur(16px)',
-            borderRadius: '16px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '2.5rem 1.5rem',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "#E50914",
+            color: "#ffffff",
+            textDecoration: "none",
+            padding: "14px 36px",
+            borderRadius: "6px",
+            fontSize: "16px",
+            fontWeight: 800,
+            letterSpacing: "1px",
+            boxShadow: "0 6px 20px rgba(229, 9, 20, 0.4)"
           }}
         >
-          <span style={{ color: '#E50914', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase' }}>
-            Production Inquiries
-          </span>
-          <h2 style={{ fontSize: '2rem', fontWeight: 900, margin: '0.4rem 0 0.8rem' }}>Ready to Collaborate?</h2>
-          <p style={{ color: '#aaa', fontSize: '0.95rem', maxWidth: '480px', marginBottom: '1.75rem' }}>
-            Interested in hiring for a role or discussing a project? Send a direct message.
-          </p>
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a
-              href={myPortfolio.socials.email}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: '#E50914',
-                color: '#ffffff',
-                padding: '0.8rem 1.8rem',
-                borderRadius: '6px',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-            >
-              <Mail size={16} /> Send Email
-            </a>
-            <a
-              href={myPortfolio.socials.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#ffffff',
-                padding: '0.8rem 1.8rem',
-                borderRadius: '6px',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-            >
-              LinkedIn
-            </a>
-          </div>
+          <Mail size={18} /> GET IN TOUCH
+        </a>
+
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "24px",
+          marginTop: "40px"
+        }}>
+          {/* GitHub SVG */}
+          <a
+            href="https://github.com/vigneshSuprithB"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#aaa", textDecoration: "none" }}
+            title="GitHub"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+          </a>
+
+          {/* LinkedIn SVG */}
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#aaa", textDecoration: "none" }}
+            title="LinkedIn"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+          </a>
+        </div>
+
+        <div style={{ marginTop: "48px", fontSize: "12px", color: "#555" }}>
+          © 2026 Vignesh Suprith. All rights reserved. Netflix is a registered trademark of Netflix, Inc.
         </div>
       </section>
     </div>
