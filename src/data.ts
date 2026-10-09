@@ -20,7 +20,7 @@ export interface SkillCategory {
 
 export const portfolioData = {
   hero: {
-    badge: "N S E R I E S",
+    badge: "V S E R I E S",
     title: "VIGNESH",
     subtitle: "MSc Computing & Technology • Full Stack & Cloud Developer",
     matchScore: "98% Match",
