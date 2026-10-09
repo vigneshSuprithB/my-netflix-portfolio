@@ -33,7 +33,8 @@ export const portfolioData = {
     resumeUrl: "#",
     githubUrl: "https://github.com/vigneshSuprithB",
     linkedinUrl: "https://linkedin.com",
-    avatarCutout: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+    photo: "/my-photo.jpg",
+    audio: "/netflix.mp3"
   },
 
   exploreCards: [

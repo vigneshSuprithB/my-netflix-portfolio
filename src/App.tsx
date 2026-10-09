@@ -25,8 +25,7 @@ import {
   ShieldCheck,
   BookOpen,
   Cpu,
-  PlaySquare,
-  Send
+  PlaySquare
 } from "lucide-react";
 import { portfolioData } from "./data";
 
@@ -50,47 +49,8 @@ const iconMap: Record<string, React.ReactNode> = {
   ShieldCheck: <ShieldCheck size={20} />,
   BookOpen: <BookOpen size={20} />,
   Cpu: <Cpu size={20} />,
-  PlaySquare: <PlaySquare size={20} />,
-  Send: <Send size={20} />
+  PlaySquare: <PlaySquare size={20} />
 };
-
-// Web Audio API: Synthesized Netflix "Ta-dum" Sound
-function playTaDum() {
-  try {
-    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    const now = ctx.currentTime;
-
-    // Deep sub bass impact
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = "sine";
-    osc1.frequency.setValueAtTime(65.41, now); // C2
-    osc1.frequency.exponentialRampToValueAtTime(32.7, now + 1.2);
-    gain1.gain.setValueAtTime(0.8, now);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-    osc1.start(now);
-    osc1.stop(now + 1.4);
-
-    // Second cinematic chord layer
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = "triangle";
-    osc2.frequency.setValueAtTime(130.81, now + 0.12);
-    osc2.frequency.exponentialRampToValueAtTime(98.0, now + 1.8);
-    gain2.gain.setValueAtTime(0.6, now + 0.12);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-    osc2.start(now + 0.12);
-    osc2.stop(now + 2.2);
-  } catch (e) {
-    console.error("Audio error", e);
-  }
-}
 
 export default function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(false);
@@ -99,7 +59,7 @@ export default function App() {
   const [activeSkillTab, setActiveSkillTab] = useState<string>("languages");
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
-  // Mouse follower state
+  // Red mouse follower
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
 
   useEffect(() => {
@@ -112,10 +72,15 @@ export default function App() {
 
   const handleSelectProfile = (name: string) => {
     setSelectedProfile(name);
-    if (!isMuted) {
-      playTaDum();
+
+    // Play netflix.mp3 from public folder
+    if (!isMuted && portfolioData.hero.audio) {
+      const audio = new Audio(portfolioData.hero.audio);
+      audio.volume = 0.8;
+      audio.play().catch((err) => console.log("Audio play error:", err));
     }
-    // Trigger the 3-second cinematic zoom intro
+
+    // 3-second cinematic zoom intro
     setIsIntroAnimating(true);
     setTimeout(() => {
       setIsIntroAnimating(false);
@@ -129,7 +94,7 @@ export default function App() {
   };
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh", backgroundColor: "#111111", color: "#fff" }}>
+    <div style={{ position: "relative", minHeight: "100vh", backgroundColor: "#111111", color: "#ffffff", fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
       {/* 🔴 RED GLOWING MOUSE POINTER */}
       <div
         style={{
@@ -161,7 +126,6 @@ export default function App() {
         }}
       />
 
-      {/* Global CSS for Animations and Mobile Nav */}
       <style>{`
         @keyframes netflixZoom {
           0% { transform: scale(0.6); opacity: 0; filter: blur(10px); }
@@ -170,7 +134,7 @@ export default function App() {
         }
         @keyframes fadeInOut {
           0% { opacity: 0; }
-          30% { opacity: 1; }
+          20% { opacity: 1; }
           80% { opacity: 1; }
           100% { opacity: 0; }
         }
@@ -178,24 +142,24 @@ export default function App() {
           .portfolio-desktop-nav {
             display: none !important;
           }
-          .hero-grid {
+          .hero-flex-wrapper {
             flex-direction: column !important;
             text-align: center !important;
           }
-          .hero-avatar-container {
-            margin: 20px auto 0 !important;
-            width: 220px !important;
-            height: 220px !important;
+          .hero-photo-wrapper {
+            margin: 24px auto 0 !important;
+            width: 240px !important;
+            height: 300px !important;
           }
         }
       `}</style>
 
-      {/* 🎬 3-SECOND CINEMATIC INTRO OVERLAY */}
+      {/* 🎬 3-SECOND CINEMATIC INTRO ANIMATION */}
       {isIntroAnimating && (
         <div style={{
           position: "fixed",
           inset: 0,
-          backgroundColor: "#000",
+          backgroundColor: "#000000",
           zIndex: 10000,
           display: "flex",
           flexDirection: "column",
@@ -209,15 +173,15 @@ export default function App() {
             color: "#E50914",
             letterSpacing: "6px",
             animation: "netflixZoom 3s ease-out forwards",
-            textShadow: "0 0 40px rgba(229,9,20,0.8)"
+            textShadow: "0 0 40px rgba(229, 9, 20, 0.8)"
           }}>
             VIGNESH
           </h1>
           <p style={{
             marginTop: "16px",
-            color: "#aaa",
+            color: "#888",
             letterSpacing: "4px",
-            fontSize: "14px",
+            fontSize: "13px",
             textTransform: "uppercase"
           }}>
             Original Portfolio Experience
@@ -225,17 +189,15 @@ export default function App() {
         </div>
       )}
 
-      {/* PROFILE GATE SCREEN */}
+      {/* PROFILE GATE */}
       {!hasEntered && !isIntroAnimating && (
         <div style={{
           minHeight: "100vh",
           background: "radial-gradient(circle at center, #1b0204 0%, #080808 80%)",
-          color: "#ffffff",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "'Helvetica Neue', Arial, sans-serif",
           padding: "24px"
         }}>
           <h1 style={{
@@ -326,7 +288,7 @@ export default function App() {
       {/* MAIN PORTFOLIO */}
       {hasEntered && (
         <div style={{ minHeight: "100vh", overflowX: "hidden" }}>
-          {/* Top Floating Header */}
+          {/* Header */}
           <header style={{
             position: "fixed",
             top: 0,
@@ -414,7 +376,7 @@ export default function App() {
             </div>
           </header>
 
-          {/* 1. HERO BILLBOARD WITH PHOTO */}
+          {/* 1. HERO BILLBOARD WITH YOUR PHOTO */}
           <section
             id="hero"
             style={{
@@ -427,7 +389,7 @@ export default function App() {
             }}
           >
             <div
-              className="hero-grid"
+              className="hero-flex-wrapper"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -435,10 +397,10 @@ export default function App() {
                 width: "100%",
                 maxWidth: "1200px",
                 margin: "0 auto",
-                zIndex: 10
+                zIndex: 10,
+                gap: "32px"
               }}
             >
-              {/* Left Column: Text & Buttons */}
               <div style={{ maxWidth: "620px" }}>
                 <div style={{
                   display: "inline-flex",
@@ -545,9 +507,9 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Column: Hero Portrait Photo with Cinematic Blend */}
+              {/* Your photo from public/my-photo.jpg */}
               <div
-                className="hero-avatar-container"
+                className="hero-photo-wrapper"
                 style={{
                   position: "relative",
                   width: "340px",
@@ -555,26 +517,24 @@ export default function App() {
                   borderRadius: "16px",
                   overflow: "hidden",
                   boxShadow: "0 20px 50px rgba(0,0,0,0.8)",
-                  border: "2px solid rgba(255, 255, 255, 0.1)",
+                  border: "2px solid rgba(255, 255, 255, 0.12)",
                   flexShrink: 0
                 }}
               >
                 <img
-                  src={portfolioData.hero.avatarCutout}
+                  src={portfolioData.hero.photo}
                   alt={portfolioData.hero.title}
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    objectPosition: "center top",
-                    filter: "contrast(105%) brightness(95%)"
+                    objectPosition: "center top"
                   }}
                 />
-                {/* Cinematic bottom and left gradients to seamlessly blend the photo */}
                 <div style={{
                   position: "absolute",
                   inset: 0,
-                  background: "linear-gradient(to top, rgba(17,17,17,0.9) 0%, transparent 40%), linear-gradient(to right, rgba(17,17,17,0.6) 0%, transparent 30%)"
+                  background: "linear-gradient(to top, rgba(17,17,17,0.85) 0%, transparent 40%), linear-gradient(to right, rgba(17,17,17,0.5) 0%, transparent 25%)"
                 }} />
               </div>
             </div>
