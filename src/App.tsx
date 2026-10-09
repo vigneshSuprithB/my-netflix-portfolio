@@ -5,18 +5,16 @@ import { Play, FileText, ExternalLink, GraduationCap, Briefcase } from 'lucide-r
 export default function App() {
   const [entered, setEntered] = useState(false);
 
-  // Netflix Profile Gate
+  // Netflix Profile Gate ("Who's watching?")
   if (!entered) {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: '#141414',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         color: '#ffffff',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         padding: '20px'
       }}>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 600, marginBottom: '2.5rem', letterSpacing: '0.5px' }}>
@@ -24,9 +22,9 @@ export default function App() {
         </h1>
         <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { label: 'Recruiter', color: '#E50914' },
-            { label: 'Developer', color: '#0071eb' },
-            { label: 'Guest', color: '#2bb872' },
+            { label: 'Recruiter', color: 'rgba(229, 9, 20, 0.85)' },
+            { label: 'Developer', color: 'rgba(0, 113, 235, 0.85)' },
+            { label: 'Guest', color: 'rgba(43, 184, 114, 0.85)' },
           ].map((profile, i) => (
             <div
               key={i}
@@ -39,24 +37,27 @@ export default function App() {
                 gap: '0.8rem',
                 transition: 'transform 0.2s ease'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.06)')}
               onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1.0)')}
             >
               <div style={{
                 width: '130px',
                 height: '130px',
                 backgroundColor: profile.color,
-                borderRadius: '8px',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '2.8rem',
                 fontWeight: 'bold',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+                boxShadow: '0 12px 30px rgba(0,0,0,0.5)'
               }}>
                 {profile.label[0]}
               </div>
-              <span style={{ color: '#808080', fontSize: '1rem', fontWeight: 500 }}>
+              <span style={{ color: '#999', fontSize: '1rem', fontWeight: 500 }}>
                 {profile.label}
               </span>
             </div>
@@ -66,31 +67,25 @@ export default function App() {
     );
   }
 
-  // Main Netflix Portfolio View
+  // Main Dark Glass Netflix Portfolio
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#141414',
-      color: '#ffffff',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      paddingBottom: '5rem'
-    }}>
-      {/* Sticky Top Navbar */}
+    <div style={{ minHeight: '100vh', color: '#ffffff', paddingBottom: '5rem' }}>
+      {/* Frosted Glass Navbar */}
       <nav style={{
-  position: 'sticky',
-  top: 0,
-  zIndex: 50,
-  backgroundColor: 'rgba(15, 15, 15, 0.65)',
-  backdropFilter: 'blur(16px)',
-  WebkitBackdropFilter: 'blur(16px)',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-  padding: '1.2rem 3rem',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-}}>
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        backgroundColor: 'rgba(12, 12, 12, 0.7)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        padding: '1.2rem 3rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <span style={{ color: '#9409e5', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
+          <span style={{ color: '#E50914', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.5px' }}>
             VIGNESH
           </span>
           <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.9rem' }}>
@@ -110,17 +105,19 @@ export default function App() {
           <button
             onClick={() => setEntered(false)}
             style={{
-              background: '#2b2b2b',
+              background: 'rgba(255, 255, 255, 0.08)',
               color: '#fff',
-              border: '1px solid #444',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               padding: '6px 14px',
-              borderRadius: '4px',
+              borderRadius: '6px',
               cursor: 'pointer',
               fontSize: '0.8rem',
               fontWeight: 500
             }}
           >
-            Exit
+            Switch Profile
           </button>
         </div>
       </nav>
@@ -141,11 +138,12 @@ export default function App() {
             <span style={{
               backgroundColor: 'rgba(229, 9, 20, 0.2)',
               color: '#E50914',
-              padding: '3px 8px',
-              borderRadius: '3px',
+              padding: '4px 10px',
+              borderRadius: '4px',
               fontSize: '0.75rem',
               fontWeight: 800,
-              letterSpacing: '1px'
+              letterSpacing: '1px',
+              border: '1px solid rgba(229, 9, 20, 0.3)'
             }}>
               NETFLIX ORIGINAL
             </span>
@@ -171,10 +169,11 @@ export default function App() {
                 gap: '0.5rem',
                 backgroundColor: '#ffffff',
                 color: '#000000',
-                padding: '0.75rem 1.75rem',
-                borderRadius: '4px',
+                padding: '0.8rem 1.8rem',
+                borderRadius: '6px',
                 fontWeight: 700,
-                textDecoration: 'none'
+                textDecoration: 'none',
+                boxShadow: '0 4px 14px rgba(255, 255, 255, 0.15)'
               }}
             >
               <Play size={18} fill="#000" /> View Episodes
@@ -187,42 +186,44 @@ export default function App() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                backgroundColor: 'rgba(109, 109, 110, 0.7)',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 color: '#ffffff',
-                padding: '0.75rem 1.75rem',
-                borderRadius: '4px',
+                padding: '0.8rem 1.8rem',
+                borderRadius: '6px',
                 fontWeight: 700,
                 textDecoration: 'none'
               }}
             >
-              <FileText size={18} /> View Resume
+              <FileText size={18} /> View CV
             </a>
           </div>
         </div>
 
-        {/* Hero Photo Card */}
+        {/* Frosted Glass Photo Card */}
         <div style={{
           width: '280px',
           height: '360px',
-          backgroundColor: '#1c1c1c',
-          borderRadius: '12px',
+          backgroundColor: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: '16px',
           overflow: 'hidden',
-          border: '1px solid #333',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.7)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
           flexShrink: 0
         }}>
           <img
             src={myPortfolio.heroImage}
             alt={myPortfolio.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
         </div>
       </section>
 
-      {/* Featured Projects / Episodes */}
+      {/* Featured Projects / Episodes (Frosted Glass Cards) */}
       <section id="projects" style={{ maxWidth: '1150px', margin: '3rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Season 1: Featured Projects
@@ -232,10 +233,13 @@ export default function App() {
             <div
               key={idx}
               style={{
-                backgroundColor: '#181818',
-                padding: '1.75rem',
-                borderRadius: '8px',
-                border: '1px solid #282828',
+                backgroundColor: 'rgba(24, 24, 27, 0.55)',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                padding: '1.8rem',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -255,7 +259,8 @@ export default function App() {
                     <span
                       key={i}
                       style={{
-                        backgroundColor: '#262626',
+                        backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                         color: '#ccc',
                         fontSize: '0.75rem',
                         padding: '4px 10px',
@@ -296,10 +301,19 @@ export default function App() {
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
           {/* Education */}
-          <div style={{ backgroundColor: '#181818', padding: '1.5rem', borderRadius: '8px', border: '1px solid #282828', textAlign: 'left' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <GraduationCap size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Education</h3>
+          <div style={{
+            backgroundColor: 'rgba(24, 24, 27, 0.45)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: '1.8rem',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
+              <GraduationCap size={22} />
+              <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Education</h3>
             </div>
             {myPortfolio.education?.map((edu, idx) => (
               <div key={idx} style={{ marginBottom: '1rem' }}>
@@ -314,10 +328,19 @@ export default function App() {
           </div>
 
           {/* Experience */}
-          <div style={{ backgroundColor: '#181818', padding: '1.5rem', borderRadius: '8px', border: '1px solid #282828', textAlign: 'left' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1rem' }}>
-              <Briefcase size={20} />
-              <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: 0 }}>Experience</h3>
+          <div style={{
+            backgroundColor: 'rgba(24, 24, 27, 0.45)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: '1.8rem',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#E50914', marginBottom: '1.25rem' }}>
+              <Briefcase size={22} />
+              <h3 style={{ fontSize: '1.15rem', color: '#fff', margin: 0 }}>Experience</h3>
             </div>
             {myPortfolio.experience?.map((exp, idx) => (
               <div key={idx} style={{ marginBottom: '1rem' }}>
@@ -333,7 +356,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Tech Skills */}
+      {/* Glass Tech Skills */}
       <section id="skills" style={{ maxWidth: '1150px', margin: '4rem auto 0', padding: '0 2rem' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 700, borderLeft: '4px solid #E50914', paddingLeft: '1rem', marginBottom: '1.5rem', textAlign: 'left' }}>
           Tech Universe
@@ -343,13 +366,16 @@ export default function App() {
             <span
               key={idx}
               style={{
-                backgroundColor: '#1f1f1f',
-                border: '1px solid #333',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 padding: '0.6rem 1.2rem',
-                borderRadius: '6px',
+                borderRadius: '20px',
                 fontSize: '0.9rem',
-                color: '#e0e0e0',
-                fontWeight: 500
+                color: '#e5e5e5',
+                fontWeight: 500,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
               }}
             >
               {skill}
